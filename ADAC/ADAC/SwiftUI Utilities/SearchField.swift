@@ -74,31 +74,15 @@ extension SearchField {
 }
 
 #Preview {
-    struct PreviewWrapper: View {
-        @State var searchText = ""
+    StatefulPreviewWrapper(initialValue: "", title: "Search Field") { $searchText in
+        VStack(spacing: 20) {
+            SearchField(text: $searchText)
+                .placeholder("Search...")
+                .frame(height: 50)
 
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Search Field")
-                    .font(.title2)
-                    .foregroundColor(.white)
-
-                SearchField(text: $searchText)
-                    .placeholder("Search...")
-                    .frame(height: 50)
-
-                if !searchText.isEmpty {
-                    Text("Searching for: \(searchText)")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-
-                Spacer()
+            if !searchText.isEmpty {
+                Text.previewCaption("Searching for: \(searchText)")
             }
-            .padding()
-            .background(Color.black)
         }
     }
-
-    return PreviewWrapper()
 }

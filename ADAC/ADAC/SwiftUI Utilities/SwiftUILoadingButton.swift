@@ -35,38 +35,22 @@ struct SwiftUILoadingButton: UIViewRepresentable {
 }
 
 #Preview {
-    struct PreviewWrapper: View {
-        @State var isLoading = false
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Loading Button")
-                    .font(.title2)
-                    .foregroundColor(.white)
-
-                SwiftUILoadingButton(
-                    isLoading: isLoading,
-                    title: isLoading ? "Loading..." : "Submit",
-                    backgroundColor: .adOrange,
-                    action: {
-                        isLoading = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            isLoading = false
-                        }
+    StatefulPreviewWrapper(initialValue: false, title: "Loading Button") { $isLoading in
+        VStack(spacing: 20) {
+            SwiftUILoadingButton(
+                isLoading: isLoading,
+                title: isLoading ? "Loading..." : "Submit",
+                backgroundColor: .adOrange,
+                action: {
+                    isLoading = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        isLoading = false
                     }
-                )
-                .frame(height: 50)
+                }
+            )
+            .frame(height: 50)
 
-                Text(isLoading ? "Processing..." : "Tap to trigger loading")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-
-                Spacer()
-            }
-            .padding()
-            .background(Color.black)
+            Text.previewCaption(isLoading ? "Processing..." : "Tap to trigger loading")
         }
     }
-
-    return PreviewWrapper()
 }

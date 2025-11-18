@@ -182,76 +182,46 @@ struct TappableAttributedText: UIViewRepresentable {
 }
 
 #Preview("TappableAttributedText") {
-    struct PreviewWrapper: View {
-        @State var layoutWidth: CGFloat?
-        @State var layoutHeight: CGFloat?
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Tappable Attributed Text")
-                    .font(.title2)
-                    .foregroundColor(.white)
-
-                TappableAttributedText(
-                    attributedText: AttributedString("Tap on any word to see the interaction. This text is tappable and responds to word selection."),
-                    maxWidth: 300,
-                    onWordTapped: { range in
-                        print("Tapped word: \(range)")
-                    },
-                    layoutWidth: $layoutWidth,
-                    layoutHeight: $layoutHeight
-                )
-                .padding()
-                .background(Color(white: 0.15))
-                .cornerRadius(8)
-
-                if let width = layoutWidth, let height = layoutHeight {
-                    Text("Layout: \(Int(width)) × \(Int(height))")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-
-                Spacer()
-            }
+    StatefulPreviewWrapper3(nil as CGFloat?, nil as CGFloat?, "", title: "Tappable Attributed Text") { $layoutWidth, $layoutHeight, $tappedWord in
+        VStack(spacing: 20) {
+            TappableAttributedText(
+                attributedText: AttributedString("Tap on any word to see the interaction. This text is tappable and responds to word selection."),
+                maxWidth: 300,
+                onWordTapped: { range in
+                    tappedWord = String(describing: range)
+                },
+                layoutWidth: $layoutWidth,
+                layoutHeight: $layoutHeight
+            )
             .padding()
-            .background(Color.black)
+            .background(Color.previewCardBackground)
+            .cornerRadius(8)
+
+            if let width = layoutWidth, let height = layoutHeight {
+                Text.previewCaption("Layout: \(Int(width)) × \(Int(height))")
+            }
+
+            if !tappedWord.isEmpty {
+                Text.previewCaption("Tapped: \(tappedWord)")
+            }
         }
     }
-
-    return PreviewWrapper()
 }
 
 #Preview("UsernameTappableAttributedText") {
-    struct PreviewWrapper: View {
-        @State var layoutWidth: CGFloat?
-        @State var layoutHeight: CGFloat?
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Username Tappable Text")
-                    .font(.title2)
-                    .foregroundColor(.white)
-
-                UsernameTappableAttributedText(
-                    attributedText: AttributedString("Check out @john and @sarah's profiles by tapping their names!"),
-                    maxWidth: 300,
-                    layoutWidth: $layoutWidth,
-                    layoutHeight: $layoutHeight
-                )
-                .padding()
-                .background(Color(white: 0.15))
-                .cornerRadius(8)
-
-                Text("Tap usernames to open their profiles")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-
-                Spacer()
-            }
+    StatefulPreviewWrapper2(nil as CGFloat?, nil as CGFloat?, title: "Username Tappable Text") { $layoutWidth, $layoutHeight in
+        VStack(spacing: 20) {
+            UsernameTappableAttributedText(
+                attributedText: AttributedString("Check out @john and @sarah's profiles by tapping their names!"),
+                maxWidth: 300,
+                layoutWidth: $layoutWidth,
+                layoutHeight: $layoutHeight
+            )
             .padding()
-            .background(Color.black)
+            .background(Color.previewCardBackground)
+            .cornerRadius(8)
+
+            Text.previewCaption("Tap usernames to open their profiles")
         }
     }
-
-    return PreviewWrapper()
 }

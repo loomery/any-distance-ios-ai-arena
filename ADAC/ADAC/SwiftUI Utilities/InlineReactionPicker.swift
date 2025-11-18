@@ -25,7 +25,7 @@ struct InlineReactionPicker: View {
                     showingInlineReactions = true
                 } label: {
                     ZStack {
-                        Image(systemName: .heartFill)
+                        Image(systemName: "heart.fill")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 13.0, height: 13.0)
@@ -37,7 +37,7 @@ struct InlineReactionPicker: View {
                             .opacity(showingInlineReactions ? 0.0 : 1.0)
                             .animation(.easeInOut(duration: 0.15), value: showingInlineReactions)
 
-                        Image(systemName: .heart)
+                        Image(systemName: "heart")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 13.0, height: 13.0)
@@ -120,33 +120,16 @@ struct InlineReactionPicker: View {
 }
 
 #Preview {
-    struct PreviewWrapper: View {
-        @State var heartFilled = false
-        @State var showingReactions = false
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Inline Reaction Picker")
-                    .font(.title2)
-                    .foregroundColor(.white)
-
-                InlineReactionPicker(
-                    heartFilled: $heartFilled,
-                    showingInlineReactions: $showingReactions,
-                    onReact: { type in
-                        print("Reacted with: \(type)")
-                    }
-                )
-                .frame(height: 60)
-                .background(Color(white: 0.15))
-                .cornerRadius(12)
-
-                Spacer()
+    StatefulPreviewWrapper2(false, false, title: "Inline Reaction Picker") { $heartFilled, $showingReactions in
+        InlineReactionPicker(
+            heartFilled: $heartFilled,
+            showingInlineReactions: $showingReactions,
+            onReact: { type in
+                print("Reacted with: \(type)")
             }
-            .padding()
-            .background(Color.black)
-        }
+        )
+        .frame(height: 60)
+        .background(Color.previewCardBackground)
+        .cornerRadius(12)
     }
-
-    return PreviewWrapper()
 }

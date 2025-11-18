@@ -35,7 +35,7 @@ struct ReactionWheel: ViewModifier {
             Button {
                 showingReactions = false
             } label: {
-                Image(systemName: .xmarkCircleFill)
+                Image(systemName: "xmark.circle.fill")
                     .font(.system(size: 30.0))
                     .opacity(0.5)
             }

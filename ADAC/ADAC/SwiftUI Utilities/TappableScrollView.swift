@@ -148,37 +148,21 @@ class TappableUIView: UIView {
 }
 
 #Preview("TappableView") {
-    struct PreviewWrapper: View {
-        @State var pressed = false
-
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Tappable View")
-                    .font(.title2)
+    StatefulPreviewWrapper(initialValue: false, title: "Tappable View") { $pressed in
+        RoundedRectangle(cornerRadius: 12)
+            .fill(pressed ? Color.adRed : Color.adOrange)
+            .frame(height: 120)
+            .overlay(
+                TappableView(
+                    onTap: { print("Tapped!") },
+                    onPress: { pressed = $0 },
+                    pressDuration: 0.5
+                )
+            )
+            .overlay(
+                Text(pressed ? "Pressing..." : "Tap or Long Press")
                     .foregroundColor(.white)
-
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(pressed ? Color.adRed : Color.adOrange)
-                    .frame(height: 120)
-                    .overlay(
-                        TappableView(
-                            onTap: { print("Tapped!") },
-                            onPress: { pressed = $0 },
-                            pressDuration: 0.5
-                        )
-                    )
-                    .overlay(
-                        Text(pressed ? "Pressing..." : "Tap or Long Press")
-                            .foregroundColor(.white)
-                            .animation(.easeInOut(duration: 0.2), value: pressed)
-                    )
-
-                Spacer()
-            }
-            .padding()
-            .background(Color.black)
-        }
+                    .animation(.easeInOut(duration: 0.2), value: pressed)
+            )
     }
-
-    return PreviewWrapper()
 }
