@@ -51,6 +51,21 @@ final class SignInViewController: UIViewController {
         signInWithAppleButton.autoSetDimension(.height, toSize: 50)
         signInWithAppleButton.autoMatch(.width, to: .width, of: view, withMultiplier: 0.85)
         signInWithAppleButton.cornerRadius = 8
+
+        #if DEBUG
+        let mockButton = UIButton(type: .system)
+        mockButton.setTitle("🐛 Mock Mode", for: .normal)
+        mockButton.backgroundColor = UIColor.systemOrange
+        mockButton.setTitleColor(.white, for: .normal)
+        mockButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        mockButton.addTarget(self, action: #selector(mockModeTapped), for: .touchUpInside)
+        stackView.insertArrangedSubview(mockButton, at: 5)
+        mockButton.autoSetDimension(.height, toSize: 50)
+        mockButton.autoMatch(.width, to: .width, of: view, withMultiplier: 0.85)
+        mockButton.layer.cornerRadius = 8
+        mockButton.clipsToBounds = true
+        #endif
+
         switch function {
         case .signIn:
             topLabel.text = "Sign In to\nAny Distance"
@@ -71,6 +86,19 @@ final class SignInViewController: UIViewController {
 
         Analytics.logEvent("Sign In With Apple", screenName, .buttonTap)
     }
+
+    #if DEBUG
+    @objc func mockModeTapped() {
+        Analytics.logEvent("Mock Mode Tapped", screenName, .buttonTap)
+
+        dismiss(animated: true) {
+            // Trigger complete mock mode login that bypasses all onboarding
+            if let viewModel = self.delegate as? OnboardingViewModel {
+                viewModel.mockModeCompleteLogin()
+            }
+        }
+    }
+    #endif
 
     @IBAction func closeTapped(_ sender: Any) {
         Analytics.logEvent("Close", screenName, .buttonTap)
@@ -105,3 +133,4 @@ extension SignInViewController: ASAuthorizationControllerPresentationContextProv
         return self.view.window!
     }
 }
+

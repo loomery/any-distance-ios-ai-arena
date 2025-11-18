@@ -145,6 +145,22 @@ struct EnterPhone: View {
             .allowsHitTesting(model.isPhoneValid)
             .animation(.easeInOut(duration: 0.2), value: model.phoneNumber)
 
+            #if DEBUG
+            Button {
+                Analytics.logEvent("Mock Mode - Complete Login", screenName, .buttonTap)
+                // Bypass all remaining onboarding and log in with mock user
+                model.mockModeCompleteLogin()
+            } label: {
+                Text("🐛 Complete Mock Login")
+                    .foregroundColor(.white)
+                    .font(.system(size: 15, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color.orange)
+                    .cornerRadius(10)
+            }
+            #endif
+
             Button {
                 Analytics.logEvent("Privacy commitment", screenName, .buttonTap)
                 UIApplication.shared.topViewController?.openUrl(withString: Links.privacyCommitment.absoluteString)

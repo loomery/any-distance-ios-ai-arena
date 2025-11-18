@@ -77,6 +77,33 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
         }
     }
 
+    #if DEBUG
+    /// Complete mock mode login - bypasses all onboarding requirements
+    func mockModeCompleteLogin() {
+        DispatchQueue.main.async {
+            // Set up mock user with all required fields
+            // Note: hasRegistered and hasFinishedOnboarding are computed properties
+            ADUser.current.id = "mock_user_001" // Non-empty ID (not containing "anon") makes hasRegistered = true
+            ADUser.current.appleSignInID = "000001.mock.test.user"
+            ADUser.current.name = "Test User"
+            ADUser.current.email = "mockuser@test.com"
+            ADUser.current.phoneNumber = "+1 (555) 123-4567" // Required for hasFinishedOnboarding
+            ADUser.current.username = "testuser" // Required for hasFinishedOnboarding
+            ADUser.current.signupDate = Date()
+            ADUser.current.distanceUnit = .miles
+
+            // Grant collectibles and mark onboarding as complete
+            CollectibleManager.grantBetaAndDay1CollectibleIfNecessary()
+            ADUser.current.hasFinishedOnboarding = true // Uses setter to save to UserDefaults
+
+            // Transition directly to main app
+            UIApplication.shared.transitionToTabBar()
+
+            Analytics.logEvent("Mock Mode Complete Login", self.screenName, .otherEvent)
+        }
+    }
+    #endif
+
     func signInTopLeftButton() {
         if let signInVC = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "signIn") as? SignInViewController {
             signInVC.delegate = self
@@ -172,7 +199,7 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
         }
     }
 
-    private func transitionToNextSignupStep() {
+    func transitionToNextSignupStep() {
         DispatchQueue.main.async {
             if (ADUser.current.phoneNumber == nil || (ADUser.current.phoneNumber?.isEmpty ?? true)) {
                 self.state = .enterPhone
