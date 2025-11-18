@@ -41,3 +41,65 @@ struct Gear3DSwiftUIView: UIViewRepresentable {
         uiView.setColor(color: color)
     }
 }
+
+#Preview("Collectible3DSwiftUIView") {
+    VStack(spacing: 20) {
+        Text("Collectible 3D View")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Placeholder for 3D collectible view
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 300)
+            .overlay(
+                VStack(spacing: 10) {
+                    Image(systemName: "cube.transparent")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white)
+                    Text("3D Collectible Placeholder")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            )
+
+        Text("Displays 3D collectible items")
+            .font(.caption)
+            .foregroundColor(.gray)
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}
+
+#Preview("Gear3DSwiftUIView") {
+    VStack(spacing: 20) {
+        Text("Gear 3D View")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Placeholder for 3D gear view
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 300)
+            .overlay(
+                VStack(spacing: 10) {
+                    Image(systemName: "gear")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white)
+                    Text("3D Gear Placeholder")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            )
+
+        Text("Displays 3D gear models with color options")
+            .font(.caption)
+            .foregroundColor(.gray)
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

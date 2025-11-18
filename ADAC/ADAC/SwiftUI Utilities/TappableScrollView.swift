@@ -124,3 +124,61 @@ class TappableUIView: UIView {
         fatalError()
     }
 }
+
+#Preview("TappableScrollView") {
+    TappableScrollView {
+        VStack(spacing: 20) {
+            Text("Tappable Scroll View")
+                .font(.title2)
+                .foregroundColor(.white)
+
+            ForEach(0..<10, id: \.self) { index in
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.adOrange.opacity(Double(index) / 10))
+                    .frame(height: 80)
+                    .overlay(
+                        Text("Item \(index + 1)")
+                            .foregroundColor(.white)
+                    )
+            }
+        }
+        .padding()
+    }
+    .background(Color.black)
+}
+
+#Preview("TappableView") {
+    struct PreviewWrapper: View {
+        @State var pressed = false
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Tappable View")
+                    .font(.title2)
+                    .foregroundColor(.white)
+
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(pressed ? Color.adRed : Color.adOrange)
+                    .frame(height: 120)
+                    .overlay(
+                        TappableView(
+                            onTap: { print("Tapped!") },
+                            onPress: { pressed = $0 },
+                            pressDuration: 0.5
+                        )
+                    )
+                    .overlay(
+                        Text(pressed ? "Pressing..." : "Tap or Long Press")
+                            .foregroundColor(.white)
+                            .animation(.easeInOut(duration: 0.2), value: pressed)
+                    )
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

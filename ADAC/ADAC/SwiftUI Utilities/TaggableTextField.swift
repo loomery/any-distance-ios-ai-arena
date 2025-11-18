@@ -306,3 +306,35 @@ extension UITextView: UITextViewDelegate {
         placeholderLabel?.isHidden = !text.isEmpty
     }
 }
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State var text = ""
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Taggable Text Field")
+                    .font(.title2)
+                    .foregroundColor(.white)
+
+                TaggableTextField(
+                    placeholder: "Write a message... (use @ to mention someone)",
+                    text: $text,
+                    axis: .vertical,
+                    returnKeyType: .default,
+                    font: .systemFont(ofSize: 16, weight: .regular)
+                )
+                .frame(minHeight: 100)
+                .padding()
+                .background(Color(white: 0.15))
+                .cornerRadius(8)
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

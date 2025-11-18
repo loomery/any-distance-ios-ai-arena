@@ -41,3 +41,13 @@ struct RoundedWhiteButtonLabel: View {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        ADWhiteButton(title: "Continue")
+        ADWhiteButton(title: "Sign In")
+        ADWhiteButton(title: "Get Started")
+    }
+    .padding()
+    .background(Color.black)
+}

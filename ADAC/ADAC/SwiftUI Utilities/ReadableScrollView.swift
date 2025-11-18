@@ -138,3 +138,75 @@ struct RefreshableScrollView<Content: View>: View {
         }
     }
 }
+
+#Preview("ReadableScrollView") {
+    struct PreviewWrapper: View {
+        @State var offset: CGFloat = 0
+        @State var contentSize: CGSize = .zero
+
+        var body: some View {
+            VStack(spacing: 0) {
+                HStack {
+                    Text("Scroll Position: \(Int(offset))")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                .padding()
+                .background(Color(white: 0.1))
+
+                ReadableScrollView(offset: $offset, contentSize: $contentSize) {
+                    VStack(spacing: 20) {
+                        ForEach(0..<20, id: \.self) { index in
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.adOrange.opacity(Double(index) / 20))
+                                .frame(height: 80)
+                                .overlay(
+                                    Text("Item \(index + 1)")
+                                        .foregroundColor(.white)
+                                )
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}
+
+#Preview("RefreshableScrollView") {
+    struct PreviewWrapper: View {
+        @State var offset: CGFloat = 0
+        @State var isRefreshing: Bool = false
+
+        var body: some View {
+            VStack {
+                RefreshableScrollView(offset: $offset, isRefreshing: $isRefreshing) {
+                    VStack(spacing: 20) {
+                        ForEach(0..<15, id: \.self) { index in
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.adYellow.opacity(Double(index) / 15))
+                                .frame(height: 80)
+                                .overlay(
+                                    Text("Item \(index + 1)")
+                                        .foregroundColor(.black)
+                                )
+                        }
+                    }
+                    .padding()
+                }
+            }
+            .background(Color.black)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    isRefreshing = false
+                }
+            }
+        }
+    }
+
+    return PreviewWrapper()
+}

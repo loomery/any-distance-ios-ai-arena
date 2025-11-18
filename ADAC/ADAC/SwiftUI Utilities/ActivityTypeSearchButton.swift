@@ -52,3 +52,30 @@ struct ActivityTypeSearchButton: View {
         }
     }
 }
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State var selectedActivity = ActivityType.run
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Activity Type Search Button")
+                    .font(.title2)
+                    .foregroundColor(.white)
+
+                ActivityTypeSearchButton(activityType: $selectedActivity)
+                    .padding()
+
+                Text("Selected: \(selectedActivity.displayName)")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

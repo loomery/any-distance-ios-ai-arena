@@ -30,3 +30,15 @@ struct AndiEmptyState: View {
         }
     }
 }
+
+#Preview("Shoes") {
+    AndiEmptyState(text: "No activities yet", type: .shoes)
+        .frame(maxHeight: .infinity)
+        .background(Color.black)
+}
+
+#Preview("Fly") {
+    AndiEmptyState(text: "No collectibles found", type: .fly)
+        .frame(maxHeight: .infinity)
+        .background(Color.black)
+}

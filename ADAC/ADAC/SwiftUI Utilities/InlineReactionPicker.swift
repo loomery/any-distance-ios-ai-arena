@@ -118,3 +118,35 @@ struct InlineReactionPicker: View {
         }
     }
 }
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State var heartFilled = false
+        @State var showingReactions = false
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Inline Reaction Picker")
+                    .font(.title2)
+                    .foregroundColor(.white)
+
+                InlineReactionPicker(
+                    heartFilled: $heartFilled,
+                    showingInlineReactions: $showingReactions,
+                    onReact: { type in
+                        print("Reacted with: \(type)")
+                    }
+                )
+                .frame(height: 60)
+                .background(Color(white: 0.15))
+                .cornerRadius(12)
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

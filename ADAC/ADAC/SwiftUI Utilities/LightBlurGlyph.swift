@@ -22,3 +22,23 @@ struct LightBlurGlyph: View {
             }
     }
 }
+
+#Preview {
+    VStack(spacing: 40) {
+        HStack(spacing: 20) {
+            LightBlurGlyph(symbolName: "heart.fill", size: 24)
+            LightBlurGlyph(symbolName: "star.fill", size: 24)
+            LightBlurGlyph(symbolName: "bolt.fill", size: 24)
+            LightBlurGlyph(symbolName: "flame.fill", size: 24)
+        }
+
+        HStack(spacing: 20) {
+            LightBlurGlyph(symbolName: "magnifyingglass", size: 20)
+            LightBlurGlyph(symbolName: "gear", size: 20)
+            LightBlurGlyph(symbolName: "bell", size: 20)
+            LightBlurGlyph(symbolName: "checkmark.circle", size: 20)
+        }
+    }
+    .padding()
+    .background(Color.black)
+}

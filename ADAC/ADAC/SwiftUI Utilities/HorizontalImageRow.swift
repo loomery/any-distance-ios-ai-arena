@@ -297,3 +297,35 @@ struct HorizontalImageRow: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        Text("Horizontal Image Row")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Placeholder for horizontal image row (actual row requires Collectible models)
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 200)
+            .overlay(
+                VStack(spacing: 10) {
+                    Image(systemName: "rectangle.grid.1x2")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white)
+                    Text("Image Row Placeholder")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            )
+
+        Text("Displays a horizontally scrolling/looping row of images")
+            .font(.caption)
+            .foregroundColor(.gray)
+            .padding()
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

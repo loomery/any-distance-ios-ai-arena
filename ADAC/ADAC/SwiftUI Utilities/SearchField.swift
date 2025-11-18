@@ -72,3 +72,33 @@ extension SearchField {
         return view
     }
 }
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State var searchText = ""
+
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Search Field")
+                    .font(.title2)
+                    .foregroundColor(.white)
+
+                SearchField(text: $searchText)
+                    .placeholder("Search...")
+                    .frame(height: 50)
+
+                if !searchText.isEmpty {
+                    Text("Searching for: \(searchText)")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

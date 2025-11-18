@@ -44,3 +44,26 @@ struct PageControl: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    struct PreviewWrapper: View {
+        @State var currentPage = 2
+
+        var body: some View {
+            VStack(spacing: 40) {
+                Text("Page: \(currentPage + 1)")
+                    .font(.title)
+                    .foregroundColor(.white)
+
+                PageControl(currentPage: $currentPage, numberOfPages: 5)
+                    .frame(height: 40)
+
+                Spacer()
+            }
+            .padding()
+            .background(Color.black)
+        }
+    }
+
+    return PreviewWrapper()
+}

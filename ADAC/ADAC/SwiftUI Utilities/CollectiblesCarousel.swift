@@ -83,3 +83,35 @@ struct CollectiblesCarousel: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        Text("Collectibles Carousel")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Placeholder for carousel view (actual carousel requires Collectible models)
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 300)
+            .overlay(
+                VStack(spacing: 10) {
+                    Image(systemName: "carousel")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white)
+                    Text("Carousel Placeholder")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            )
+
+        Text("Displays a carousel of collectible items")
+            .font(.caption)
+            .foregroundColor(.gray)
+            .padding()
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

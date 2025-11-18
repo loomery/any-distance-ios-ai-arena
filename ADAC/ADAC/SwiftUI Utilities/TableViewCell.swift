@@ -141,3 +141,52 @@ struct SectionHeaderText: View {
         .padding(.leading, 5)
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        SectionHeaderText(text: "Settings")
+
+        VStack(spacing: 0) {
+            TableViewCell(
+                text: "Profile",
+                type: .top,
+                onTap: { print("Profile tapped") }
+            )
+
+            TableViewCell(
+                text: "Notifications",
+                type: .middle,
+                onTap: { print("Notifications tapped") }
+            )
+
+            TableViewCell(
+                text: "Privacy",
+                accessoryImage: Image(systemName: "chevron.right"),
+                type: .bottom,
+                onTap: { print("Privacy tapped") }
+            )
+        }
+
+        SectionHeaderText(text: "About")
+
+        VStack(spacing: 0) {
+            TableViewCell(
+                text: "Version",
+                type: .top,
+                onTap: { print("Version tapped") }
+            )
+
+            TableViewCell(
+                text: "Help & Support",
+                accessoryImage: Image(systemName: "chevron.right"),
+                type: .bottom,
+                onTap: { print("Help tapped") }
+            )
+        }
+
+        Spacer()
+    }
+    .padding([.leading, .trailing], 15)
+    .padding(.top, 20)
+    .background(Color.black)
+}
