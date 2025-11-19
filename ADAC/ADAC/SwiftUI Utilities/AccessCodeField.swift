@@ -245,7 +245,72 @@ struct AccessCodeField: View {
     }
 }
 
-#Preview {
-    @FocusState var focused: Bool
-    AccessCodeField(accessCode: .constant(""), isFocused: $focused)
+#if DEBUG
+private struct AccessCodeFieldPreviewGallery: View {
+    @State private var interactiveCode: String = ""
+    @State private var presetCode: String = "ANDI12"
+    @State private var completedCode: String = "ANYDST"
+    @FocusState private var interactiveFocus: Bool
+    @FocusState private var presetFocus: Bool
+    @FocusState private var completedFocus: Bool
+
+    private var presetFocusBinding: Binding<Bool> {
+        Binding(get: { presetFocus },
+                set: { newValue in
+                    presetFocus = newValue
+                })
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 32) {
+            VStack(alignment: .leading, spacing: 12) {
+                Label("Live Entry", systemImage: "keyboard")
+                    .font(.headline)
+                    .foregroundColor(.white.opacity(0.85))
+                AccessCodeField(accessCode: $interactiveCode, isFocused: $interactiveFocus)
+                HStack {
+                    Button("Focus") { interactiveFocus = true }
+                    Button("Randomize") {
+                        let sanitized = UUID().uuidString.replacingOccurrences(of: "-", with: "")
+                        interactiveCode = String(sanitized.prefix(6))
+                    }
+                    Button("Clear") {
+                        interactiveCode = ""
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.white.opacity(0.2))
+            }
+
+            VStack(alignment: .leading, spacing: 12) {
+                Label("Editing Prefilled Code", systemImage: "character.cursor.ibeam")
+                    .font(.headline)
+                    .foregroundColor(.white.opacity(0.85))
+                AccessCodeField(accessCode: $presetCode, isFocused: $presetFocus)
+                Toggle("Focused", isOn: presetFocusBinding)
+                    .toggleStyle(.switch)
+            }
+
+            VStack(alignment: .leading, spacing: 12) {
+                Label("Completed Code", systemImage: "checkmark.seal")
+                    .font(.headline)
+                    .foregroundColor(.white.opacity(0.85))
+                AccessCodeField(accessCode: $completedCode, isFocused: $completedFocus)
+            }
+        }
+        .padding(24)
+        .background(
+            LinearGradient(colors: [
+                .black,
+                Color(red: 0.05, green: 0.05, blue: 0.08)
+            ], startPoint: .top, endPoint: .bottom)
+            .ignoresSafeArea()
+        )
+    }
 }
+
+#Preview("Access Code Field States") {
+    AccessCodeFieldPreviewGallery()
+        .preferredColorScheme(.dark)
+}
+#endif

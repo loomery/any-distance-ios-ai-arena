@@ -141,3 +141,64 @@ struct SectionHeaderText: View {
         .padding(.leading, 5)
     }
 }
+
+#if DEBUG
+private struct TableViewCellPreviewGallery: View {
+    @State private var selectedType: TableViewCellType = .top
+    @State private var notificationsEnabled: Bool = true
+    @State private var headerText: String = "Settings"
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            SectionHeaderText(text: headerText)
+                .padding(.horizontal)
+
+            VStack(spacing: 0) {
+                TableViewCell(text: "Notifications",
+                              image: Image(systemName: "bell.fill"),
+                              accessoryImage: Image(systemName: "chevron.right"),
+                              imageSize: CGSize(width: 18, height: 18),
+                              accessoryTint: .white.opacity(0.6),
+                              type: selectedType,
+                              onTap: {})
+                TableViewCell(text: "Auto Upload",
+                              font: .system(size: 16, weight: .medium),
+                              accessory: AnyView(
+                                Toggle("", isOn: $notificationsEnabled)
+                                    .labelsHidden()
+                                    .tint(.orange)
+                              ),
+                              type: .middle,
+                              onTap: nil)
+                TableViewCell(text: "Floating Example",
+                              textColor: .orange,
+                              accessoryImage: Image(systemName: "lock.fill"),
+                              accessoryTint: .orange,
+                              type: .floating,
+                              onTap: {})
+            }
+            .padding()
+            .background(Color(.systemGray4))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+            Picker("Cell Corner Style", selection: $selectedType) {
+                Text("Top").tag(TableViewCellType.top)
+                Text("Middle").tag(TableViewCellType.middle)
+                Text("Bottom").tag(TableViewCellType.bottom)
+                Text("Floating").tag(TableViewCellType.floating)
+            }
+            .pickerStyle(.segmented)
+
+            TextField("Header Text", text: $headerText)
+                .textFieldStyle(.roundedBorder)
+        }
+        .padding()
+        .background(Color(.systemGray6))
+    }
+}
+
+#Preview("Table View Cell States") {
+    TableViewCellPreviewGallery()
+        .preferredColorScheme(.dark)
+}
+#endif
