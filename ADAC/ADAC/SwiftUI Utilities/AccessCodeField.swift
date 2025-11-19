@@ -245,7 +245,30 @@ struct AccessCodeField: View {
     }
 }
 
-#Preview {
+private struct AccessCodeFieldWrapper: View {
+    @State var code: String
     @FocusState var focused: Bool
-    AccessCodeField(accessCode: .constant(""), isFocused: $focused)
+    
+    init(initialCode: String) {
+        _code = State(initialValue: initialCode)
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Code: \(code)")
+                .foregroundColor(.white)
+                .font(.caption)
+            AccessCodeField(accessCode: $code, isFocused: $focused)
+        }
+    }
+}
+
+#Preview {
+    VStack(spacing: 40) {
+        AccessCodeFieldWrapper(initialCode: "")
+        AccessCodeFieldWrapper(initialCode: "123")
+        AccessCodeFieldWrapper(initialCode: "123456")
+    }
+    .padding()
+    .background(Color.black)
 }

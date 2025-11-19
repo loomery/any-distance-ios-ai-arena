@@ -44,3 +44,28 @@ struct PageControl: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        PageControlWrapper()
+    }
+}
+
+private struct PageControlWrapper: View {
+    @State private var currentPage = 0
+    
+    var body: some View {
+        VStack {
+            TabView(selection: $currentPage) {
+                Text("Page 0").tag(0).foregroundColor(.white)
+                Text("Page 1").tag(1).foregroundColor(.white)
+                Text("Page 2").tag(2).foregroundColor(.white)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(height: 200)
+            
+            PageControl(currentPage: $currentPage, numberOfPages: 3)
+        }
+    }
+}

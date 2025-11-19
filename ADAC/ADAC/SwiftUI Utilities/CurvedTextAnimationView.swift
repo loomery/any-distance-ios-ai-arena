@@ -95,3 +95,12 @@ struct CurvedTextAnimationView: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CurvedTextAnimationView(text: "ANY DISTANCE", radius: 100)
+            .foregroundColor(.white)
+            .frame(width: 300, height: 300)
+    }
+}

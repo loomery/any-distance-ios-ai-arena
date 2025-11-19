@@ -320,3 +320,12 @@ struct AsyncCachedImage: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        AsyncCachedImage(url: URL(string: "https://via.placeholder.com/300"),
+                         showsLoadingIndicator: true)
+        .frame(width: 300, height: 300)
+    }
+}

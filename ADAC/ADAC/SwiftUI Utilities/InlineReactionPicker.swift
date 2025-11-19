@@ -118,3 +118,24 @@ struct InlineReactionPicker: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 40) {
+            InlineReactionPickerWrapper()
+        }
+    }
+}
+
+private struct InlineReactionPickerWrapper: View {
+    @State var heartFilled: Bool = false
+    @State var showingInlineReactions: Bool = false
+    
+    var body: some View {
+        InlineReactionPicker(heartFilled: $heartFilled,
+                             showingInlineReactions: $showingInlineReactions) { reaction in
+            print("Reacted with \(reaction.emoji)")
+        }
+    }
+}

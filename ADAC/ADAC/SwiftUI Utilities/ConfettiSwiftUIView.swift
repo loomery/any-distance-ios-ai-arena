@@ -34,8 +34,10 @@ struct ConfettiSwiftUIView: UIViewRepresentable {
     }
 }
 
+
 #Preview {
-    ConfettiSwiftUIView(confettiColors: [.adOrange, .adOrangeLighter, .adYellow, .adRed, .adBrown],
+    ConfettiSwiftUIView(confettiColors: [.red, .orange, .yellow, .green, .blue],
                         isStarted: .constant(true))
     .ignoresSafeArea()
 }
+

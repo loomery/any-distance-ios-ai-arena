@@ -63,11 +63,37 @@ struct ADSegmentedControl: View {
 }
 
 fileprivate struct PreviewWrapper: View {
-    @State var selectedIdx: Int = 0
+    @State var selectedIdx1: Int = 0
+    @State var selectedIdx2: Int = 1
+    @State var selectedIdx3: Int = 0
 
     var body: some View {
-        ADSegmentedControl(segments: ["Segment 1", "Segment 2", "Segment 3"],
-                           selectedSegmentIdx: $selectedIdx)
+        VStack(spacing: 30) {
+            VStack(alignment: .leading) {
+                Text("Standard")
+                    .foregroundColor(.white)
+                ADSegmentedControl(segments: ["Segment 1", "Segment 2", "Segment 3"],
+                                   selectedSegmentIdx: $selectedIdx1)
+            }
+
+            VStack(alignment: .leading) {
+                Text("Two Segments")
+                    .foregroundColor(.white)
+                ADSegmentedControl(segments: ["Yes", "No"],
+                                   selectedSegmentIdx: $selectedIdx2)
+            }
+
+            VStack(alignment: .leading) {
+                Text("No Background")
+                    .foregroundColor(.white)
+                ADSegmentedControl(segments: ["One", "Two", "Three", "Four"],
+                                   showBg: false,
+                                   selectedSegmentIdx: $selectedIdx3)
+            }
+        }
+        .padding()
+        .background(Color.black)
+        .previewLayout(.sizeThatFits)
     }
 }
 

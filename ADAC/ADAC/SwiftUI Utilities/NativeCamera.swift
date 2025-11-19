@@ -47,3 +47,14 @@ struct NativeCamera: UIViewControllerRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        Text("Camera Preview Placeholder")
+            .foregroundColor(.white)
+        // NativeCamera requires a real device or simulator with camera support.
+        // Uncommenting the line below might crash the preview if camera is not available.
+        // NativeCamera(image: .constant(nil), sourceType: .camera)
+    }
+}

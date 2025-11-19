@@ -210,3 +210,47 @@ extension View {
     }
     #endif
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        
+        VStack(spacing: 30) {
+            // RoundedCorner preview
+            Text("Rounded Corners")
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(20, corners: [.topLeft, .bottomRight])
+            
+            // AlertButtonStyle preview
+            Button("Alert Button Style") {
+                print("Pressed")
+            }
+            .buttonStyle(AlertButtonStyle())
+            .frame(height: 50)
+            
+            // BlurModifier preview
+            Text("Blurred Text")
+                .font(.largeTitle)
+                .foregroundColor(.white)
+                .modifier(BlurModifier(radius: 2))
+            
+            // TouchDownUpEventModifier preview
+            TouchDownUpWrapper()
+        }
+    }
+}
+
+private struct TouchDownUpWrapper: View {
+    @State private var isPressed = false
+    
+    var body: some View {
+        Text(isPressed ? "Pressed!" : "Press Me")
+            .padding()
+            .background(isPressed ? Color.green : Color.gray)
+            .cornerRadius(10)
+            .onTouchDownUpEvent { state in
+                isPressed = state == .pressed
+            }
+    }
+}

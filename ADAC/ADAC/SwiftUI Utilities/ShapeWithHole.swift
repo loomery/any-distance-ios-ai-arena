@@ -27,3 +27,24 @@ extension Path {
         return Path(reversedCGPath)
     }
 }
+
+#Preview {
+    ZStack {
+        Image(systemName: "photo")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .edgesIgnoringSafeArea(.all)
+        
+        Rectangle()
+            .fill(Color.black.opacity(0.5))
+            .mask(
+                ShapeWithHole(cutout: CGSize(width: 200, height: 200))
+                    .fill(style: FillStyle(eoFill: true))
+            )
+            .edgesIgnoringSafeArea(.all)
+        
+        Text("Hole in the mask")
+            .foregroundColor(.white)
+            .padding(.top, 250)
+    }
+}

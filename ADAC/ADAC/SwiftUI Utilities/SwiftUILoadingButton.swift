@@ -33,3 +33,33 @@ struct SwiftUILoadingButton: UIViewRepresentable {
         uiView.isLoading = isLoading
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        LoadingButtonWrapper()
+    }
+}
+
+private struct LoadingButtonWrapper: View {
+    @State private var isLoading = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            SwiftUILoadingButton(isLoading: isLoading,
+                                 title: "Tap Me",
+                                 backgroundColor: .white) {
+                isLoading = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    isLoading = false
+                }
+            }
+            .frame(height: 50)
+            
+            Toggle("Loading", isOn: $isLoading)
+                .padding()
+                .cornerRadius(10)
+                .padding()
+        }
+    }
+}

@@ -30,3 +30,13 @@ struct AndiEmptyState: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 40) {
+            AndiEmptyState(text: "No shoes found.", type: .shoes)
+            AndiEmptyState(text: "You can fly!", type: .fly)
+        }
+    }
+}

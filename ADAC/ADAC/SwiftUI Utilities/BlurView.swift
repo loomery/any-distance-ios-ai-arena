@@ -192,3 +192,29 @@ open class VariableBlurUIView: UIVisualEffectView {
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {}
 }
+
+#Preview {
+    ZStack {
+        Image(systemName: "photo")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .edgesIgnoringSafeArea(.all)
+        
+        VStack(spacing: 20) {
+            DarkBlurView()
+                .frame(width: 100, height: 100)
+                .cornerRadius(20)
+                .overlay(Text("Dark").foregroundColor(.white))
+            
+            LightBlurView()
+                .frame(width: 100, height: 100)
+                .cornerRadius(20)
+                .overlay(Text("Light").foregroundColor(.black))
+            
+            BlurView(style: .regular, intensity: 0.5)
+                .frame(width: 100, height: 100)
+                .cornerRadius(20)
+                .overlay(Text("Regular 0.5").foregroundColor(.white))
+        }
+    }
+}

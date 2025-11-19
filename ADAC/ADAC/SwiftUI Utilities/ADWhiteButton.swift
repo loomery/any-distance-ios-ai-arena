@@ -41,3 +41,18 @@ struct RoundedWhiteButtonLabel: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 20) {
+            ADWhiteButton(title: "Click Me") {
+                print("Clicked")
+            }
+            .padding()
+            
+            RoundedWhiteButtonLabel(text: "Label Only")
+                .frame(width: 100, height: 30)
+        }
+    }
+}

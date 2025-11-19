@@ -26,3 +26,27 @@ extension View {
         modifier(ParallaxEffect())
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        
+        VStack {
+            Text("Tilt your device")
+                .foregroundColor(.white)
+                .padding(.bottom, 50)
+            
+            Image(systemName: "star.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)
+                .foregroundColor(.yellow)
+                .parallaxEffect()
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 150, height: 150)
+                )
+        }
+    }
+}

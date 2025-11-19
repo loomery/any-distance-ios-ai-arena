@@ -31,3 +31,32 @@ final class MotionManager: ObservableObject {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        MotionManagerWrapper()
+    }
+}
+
+private struct MotionManagerWrapper: View {
+    @StateObject private var motionManager = MotionManager()
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Motion Manager Preview")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            Text("Pitch: \(motionManager.pitch, specifier: "%.2f")")
+                .foregroundColor(.white)
+            
+            Text("Roll: \(motionManager.roll, specifier: "%.2f")")
+                .foregroundColor(.white)
+            
+            Text("(Requires physical device)")
+                .font(.caption)
+                .foregroundColor(.gray)
+        }
+    }
+}

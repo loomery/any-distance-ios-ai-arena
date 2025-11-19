@@ -180,3 +180,39 @@ struct TappableAttributedText: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        TappableAttributedTextWrapper()
+    }
+}
+
+private struct TappableAttributedTextWrapper: View {
+    @State private var layoutWidth: CGFloat?
+    @State private var layoutHeight: CGFloat?
+    
+    var attributedText: AttributedString {
+        var string = AttributedString("Hello @world this is a test")
+        string.foregroundColor = .white
+        string.font = .systemFont(ofSize: 17)
+        
+        if let range = string.range(of: "@world") {
+            string[range].foregroundColor = .orange
+        }
+        
+        return string
+    }
+    
+    var body: some View {
+        TappableAttributedText(attributedText: attributedText,
+                               maxWidth: 300,
+                               onWordTapped: { range in
+            print("Tapped word range: \(range)")
+        },
+                               layoutWidth: $layoutWidth,
+                               layoutHeight: $layoutHeight)
+        .frame(width: layoutWidth, height: layoutHeight)
+        .background(Color.gray.opacity(0.2))
+    }
+}

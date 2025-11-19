@@ -141,3 +141,18 @@ struct SectionHeaderText: View {
         .padding(.leading, 5)
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 20) {
+            TableViewCell(text: "Top Cell", type: .top)
+            TableViewCell(text: "Middle Cell", type: .middle)
+            TableViewCell(text: "Bottom Cell", type: .bottom)
+            TableViewCell(text: "Floating Cell",
+                          accessoryImage: Image(systemName: "chevron.right"),
+                          type: .floating)
+        }
+        .padding()
+    }
+}
