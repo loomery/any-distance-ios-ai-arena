@@ -4,6 +4,10 @@
 **/*.xcworkspace/xcuserdata/
 *.xcarchive
 *.ipa
+*.xcworkspace
+**/*.pbxuser
+**/*.perspective
+**/*.perspectivev3
 
 # DerivedData
 DerivedData/
@@ -19,6 +23,16 @@ Podfile.lock
 .swiftpm/
 *.resolved
 
+# Carthage
+Carthage/
+*.carthage/
+
+# FastLane
+fastlane/report.json
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
 # IDE
 .idea/
 *.swp
@@ -29,6 +43,9 @@ Podfile.lock
 .DS_Store
 .AppleDouble
 .LSOverride
+._*
+.Spotlight-V100
+.Trashes
 
 # Logs
 *.log
@@ -41,7 +58,14 @@ yarn-error.log*
 .env.local
 .env.*.local
 
+# Test Coverage
+*.gcda
+*.gcno
+coverage.xml
+.codecov.yml
+
 # Misc
 .vscode/
 .vscode-server/
 *.iml
+.swiftlint.yml.bak
