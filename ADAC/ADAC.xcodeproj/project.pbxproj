@@ -677,6 +677,7 @@
 		7D8B09552899B7890011D8C9 /* RecordingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8B09542899B7890011D8C9 /* RecordingSettingsView.swift */; };
 		7D8B09572899B7E40011D8C9 /* RecordingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8B09562899B7E40011D8C9 /* RecordingSettings.swift */; };
 		7DB5D0112885F2820020AA1B /* Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D0102885F2820020AA1B /* Split.swift */; };
+		A68193C02ED89E2100CC95E0 /* FadeAcrossButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68193BF2ED89E2100CC95E0 /* FadeAcrossButtonStyle.swift */; };
 		B570BAA12046B7E4457452B3 /* Pods_ADAC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D558CB6CD688CF281CAC27 /* Pods_ADAC.framework */; };
 /* End PBXBuildFile section */
 
@@ -1372,6 +1373,7 @@
 		7D8B09562899B7E40011D8C9 /* RecordingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSettings.swift; sourceTree = "<group>"; };
 		7DB5D0102885F2820020AA1B /* Split.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Split.swift; sourceTree = "<group>"; };
 		84D558CB6CD688CF281CAC27 /* Pods_ADAC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADAC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A68193BF2ED89E2100CC95E0 /* FadeAcrossButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeAcrossButtonStyle.swift; sourceTree = "<group>"; };
 		D9478FF43539C2F826D0CA8A /* Pods-ADAC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADAC.debug.xcconfig"; path = "Target Support Files/Pods-ADAC/Pods-ADAC.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2066,6 +2068,7 @@
 				4CBE4A5329BA8246000207F0 /* ADSegmentedControl.swift */,
 				4C08A6A929D4CDF100681535 /* HorizontalImageRow.swift */,
 				4C0A66B629AEB2B700506EDE /* ReactionWheel.swift */,
+				A68193BF2ED89E2100CC95E0 /* FadeAcrossButtonStyle.swift */,
 				4C08A6AB29D4E6A800681535 /* ReadableScrollView.swift */,
 				4C5448FF2A12EBF4001D6F33 /* InlineReactionPicker.swift */,
 				4C1A99F329DA1BFA000EDC57 /* ZoomableScrollView.swift */,
@@ -3330,9 +3333,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ADAC/Pods-ADAC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ADAC/Pods-ADAC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3535,6 +3542,7 @@
 				4C4C69E92A7C7FF100B1A138 /* GoalProgressView.swift in Sources */,
 				4C13B8D025AE4BDA00ED0980 /* LegacyActivity.swift in Sources */,
 				4C5C80C529BFB3AF009553FC /* SuggestedTable.swift in Sources */,
+				A68193C02ED89E2100CC95E0 /* FadeAcrossButtonStyle.swift in Sources */,
 				4CD93C3025C48F9100C14A38 /* UserDefaults+AppGroup.swift in Sources */,
 				4C09E75B2BAA6DBD008EE60F /* GearDetailView.swift in Sources */,
 				4C43358226EBF771003B8841 /* PillPageControl.swift in Sources */,
@@ -4046,7 +4054,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UCNNRR6B3Y;
+				DEVELOPMENT_TEAM = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4157,7 +4165,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UCNNRR6B3Y;
+				DEVELOPMENT_TEAM = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
