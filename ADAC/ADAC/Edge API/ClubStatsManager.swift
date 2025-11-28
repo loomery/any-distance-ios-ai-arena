@@ -12,8 +12,19 @@ import SwiftyJSON
 class ClubStatsManager {
     static let shared = ClubStatsManager()
     private let baseUrl = Edge.host.appendingPathComponent("posts")
+    
+    #if DEBUG
+    private var isMockModeEnabled: Bool {
+        MockModeManager.shared.isEnabled
+    }
+    #endif
 
     func getPastClubStatsData() async -> [DateRangedClubStatsData] {
+        #if DEBUG
+        if isMockModeEnabled {
+            return MockModeManager.shared.historicalClubStats()
+        }
+        #endif
         guard let userSignupDate = ADUser.current.createdAt else {
             return []
         }
@@ -71,6 +82,11 @@ class ClubStatsManager {
     func getClubStats(for userID: ADUser.ID = ADUser.current.id,
                       startDate: Date,
                       endDate: Date? = nil) async throws -> ClubStatsData {
+        #if DEBUG
+        if isMockModeEnabled {
+            return MockModeManager.shared.clubStatsData()
+        }
+        #endif
         let url = baseUrl
             .appendingPathComponent("data-agg")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)

@@ -53,8 +53,13 @@ struct PickUsername: View {
             } catch {
                 DispatchQueue.main.async {
                     if model.username == usernameBeforeRequest {
+                        #if DEBUG
+                        // In mock mode / local testing we don't want network failures to block onboarding
+                        state = .usernameAvailable
+                        #else
                         state = .usernameTaken
                         UIApplication.shared.topViewController?.showFailureToast(with: error)
+                        #endif
                     }
                 }
             }

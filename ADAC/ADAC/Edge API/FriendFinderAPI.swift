@@ -63,6 +63,21 @@ class FriendFinderAPI: NSObject, ObservableObject {
 
     func load(with onboardingModel: OnboardingViewModel? = nil,
               loadCurrentUser: Bool = true) async throws {
+        #if DEBUG
+        if MockModeManager.shared.isEnabled {
+            let snapshot = MockModeManager.shared.friendFinderData()
+            await MainActor.run {
+                onboardingModel?.state = .viewingContacts
+                self.contactsOnAnyDistance = snapshot.contactsOnAD
+                self.contactsNotOnAnyDistance = snapshot.contactsNotOnAD
+                self.friendsOfContacts = []
+                self.teamAnyDistance = snapshot.contactsOnAD
+            }
+            self.usersOnAD = snapshot.contactsOnAD.compactMap { $0.adUser }
+            self.leaderboard = snapshot.leaderboard
+            return
+        }
+        #endif
         if authorizationStatus() != .authorized {
             await MainActor.run {
                 onboardingModel?.state = .viewingContacts
@@ -609,7 +624,7 @@ extension NSUbiquitousKeyValueStore {
     }
 }
 
-fileprivate extension NSUbiquitousKeyValueStore {
+extension NSUbiquitousKeyValueStore {
     var usersOnAD: [ADUser] {
         get {
             if let data = data(forKey: "usersOnAD") {

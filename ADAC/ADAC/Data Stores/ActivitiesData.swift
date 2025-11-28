@@ -120,6 +120,12 @@ class ActivitiesData: ObservableObject {
 
     let activitiesReloadedPublisher = PassthroughSubject<Void, Never>()
     
+    #if DEBUG
+    private var isMockModeEnabled: Bool {
+        MockModeManager.shared.isEnabled
+    }
+    #endif
+    
     // MARK: - Init
     
     // use the shared instance
@@ -197,6 +203,19 @@ class ActivitiesData: ObservableObject {
     }
     
     func load(updateUserAndCollectibles: Bool = true) async {
+        #if DEBUG
+        if isMockModeEnabled {
+            let mockActivities = MockModeManager.shared.activities.sorted(by: { $0.startDate > $1.startDate })
+            await MainActor.run {
+                self.activities = mockActivities.map { ActivityIdentifiable(activity: $0) }
+                self.hasHealthKitActivities = !mockActivities.isEmpty
+                self.activitiesReloadedPublisher.send()
+            }
+            cacheActivities(activities: mockActivities)
+            return
+        }
+        #endif
+
         guard hkActivitiesStore.hasRequestedAuthorization() else {
             return
         }
@@ -223,6 +242,18 @@ class ActivitiesData: ObservableObject {
         }
     }
 
+    #if DEBUG
+    func applyMockActivities(_ mockActivities: [Activity]) {
+        Task { @MainActor in
+            let sortedActivities = mockActivities.sorted(by: { $0.startDate > $1.startDate })
+            self.activities = sortedActivities.map { ActivityIdentifiable(activity: $0) }
+            self.hasHealthKitActivities = !sortedActivities.isEmpty
+            self.activitiesReloadedPublisher.send()
+        }
+        cacheActivities(activities: mockActivities)
+    }
+    #endif
+
     func hasTrackedADActivity() -> Bool {
         return activities.contains(where: { $0.activity.workoutSource == .anyDistance })
     }
@@ -237,6 +268,12 @@ class ActivitiesData: ObservableObject {
     // MARK: - Private
 
     func updateUserForNewActivities() async {
+        #if DEBUG
+        if isMockModeEnabled {
+            return
+        }
+        #endif
+
         let activities = activities.map { $0.activity }
             .sorted(by: { lhs, rhs in
                 return lhs.startDate.compare(rhs.startDate) == .orderedDescending
@@ -325,6 +362,12 @@ class ActivitiesData: ObservableObject {
     // MARK: - Push Notifications
     
     func startObservingNewActivitiesForAuthorizedProviders() {
+        #if DEBUG
+        if isMockModeEnabled {
+            return
+        }
+        #endif
+        
         guard ADUser.current.hasFinishedOnboarding else {
             return
         }
@@ -343,6 +386,12 @@ class ActivitiesData: ObservableObject {
     }
     
     func startObservingNewActivities(for provider: ActivitiesProvider) {
+        #if DEBUG
+        if isMockModeEnabled {
+            return
+        }
+        #endif
+        
         Task {
             switch provider {
             case .appleHealth:

@@ -273,6 +273,22 @@ struct OnboardingView: View {
                     }
 
                     Spacer()
+
+                    #if DEBUG
+                    Button {
+                        model.skipToDemoExperience()
+                        Analytics.logEvent("Demo mode activated", screenName, .buttonTap)
+                    } label: {
+                        Text("Demo Mode")
+                            .font(.system(size: 14, weight: .semibold))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.white.opacity(0.12))
+                            .cornerRadius(10)
+                    }
+                    .contentShape(Rectangle())
+                    .modifier(BlurOpacityTransition(speed: 2.0))
+                    #endif
                 }
                 .foregroundColor(.white)
                 Spacer()

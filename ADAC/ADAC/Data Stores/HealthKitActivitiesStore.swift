@@ -52,6 +52,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     var daysToSync: Int = 365
     private var activitySyncedValue = PassthroughSubject<Activity, Never>()
     
+    #if DEBUG
+    private var shouldBypassHealthKit: Bool {
+        MockModeManager.shared.isEnabled
+    }
+    #endif
+    
     private init() {
         activitySynced = activitySyncedValue.eraseToAnyPublisher()
     }
@@ -63,6 +69,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
     
     func isAuthorizedForAllTypes() async throws -> Bool {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return true
+        }
+        #endif
+        
         let typesToShare: Set<HKSampleType> = Set([
             HKSampleType.workoutType(),
             HKSeriesType.workoutRoute(),
@@ -111,14 +123,29 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
 
     func hasRequestedAuthorization() -> Bool {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return true
+        }
+        #endif
         return isAuthorizedToShare() || UserDefaults.standard.hasAskedForHealthKitReadPermission
     }
 
     func hasRequestedRingsAuthorization() -> Bool {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return true
+        }
+        #endif
         return UserDefaults.standard.hasAskedForHealthKitRingsPermission
     }
 
     func isAuthorizedToShare() -> Bool {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return true
+        }
+        #endif
         let types: Set<HKSampleType> = Set([HKSampleType.workoutType(),
                                             HKSeriesType.workoutRoute(),
                                             HKQuantityType.quantityType(forIdentifier: .heartRate)!,
@@ -139,6 +166,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
 
     func requestAuthorization(with analyticsScreenName: String, onSuccess: (() -> Void)? = nil) {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            onSuccess?()
+            return
+        }
+        #endif
         let split = NSUbiquitousKeyValueStore.default.split(for: AndiHealthAuth.self)
         split.sendAnalytics()
         switch split {
@@ -197,6 +230,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
     
     func loadLatestActivity() async -> Activity? {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return MockModeManager.shared.activities.first
+        }
+        #endif
+        
         guard hasRequestedAuthorization() else {
             return nil
         }
@@ -225,6 +264,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
     
     func load() async throws -> [Activity] {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return MockModeManager.shared.activities
+        }
+        #endif
+        
         guard hasRequestedAuthorization() else {
             return []
         }
@@ -258,6 +303,15 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     func getActivities(with activityType: ActivityType, 
                        startDate: Date,
                        endDate: Date) async throws -> [Activity] {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return MockModeManager.shared.activities.filter { activity in
+                activityType.matchingGoalActivityTypes.contains(activity.activityType) &&
+                activity.startDate >= startDate &&
+                activity.startDate <= endDate
+            }
+        }
+        #endif
         return try await withCheckedThrowingContinuation { continuation in
             let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)
             let datePredicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: [])
@@ -290,6 +344,15 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
                            startDate: Date,
                            endDate: Date,
                            fields: [PartialKeyPath<Activity>]) async throws -> [PartialKeyPath<Activity>: [Float]] {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            var mock: [PartialKeyPath<Activity>: [Float]] = [:]
+            for field in fields {
+                mock[field] = Array(repeating: 0, count: 7)
+            }
+            return mock
+        }
+        #endif
         var data: [PartialKeyPath<Activity>: [Float]] = [:]
         var curStartDate = startDate
         let gmt = TimeZone(identifier: "GMT")!
@@ -347,6 +410,11 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
 
     func getHistoricalData(for goal: Goal,
                            field: PartialKeyPath<Activity>) async throws -> (weeklyAvg: Float, data: [Float]) {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return (weeklyAvg: 0, data: Array(repeating: 0, count: 7))
+        }
+        #endif
         let startDate = goal.startDate
         let endDate = Date()
         var activities = ActivitiesData.shared.activities
@@ -386,6 +454,19 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
 
     func getRouteData(for activities: [Activity]) async throws -> [[CLLocationCoordinate2D]] {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            var coordinates: [[CLLocationCoordinate2D]] = []
+            for activity in activities {
+                if let values = try? await activity.coordinates.map({ $0.coordinate }) {
+                    coordinates.append(values)
+                } else {
+                    coordinates.append([])
+                }
+            }
+            return coordinates
+        }
+        #endif
         return await withTaskGroup(of: [CLLocationCoordinate2D].self) { group in
             for activity in activities {
                 group.addTask {
@@ -533,6 +614,11 @@ enum HealthKitActivitiesStoreError: Error {
 
 extension HealthKitActivitiesStore {
     func startObservingNewActivities() async {
+        #if DEBUG
+        if shouldBypassHealthKit {
+            return
+        }
+        #endif
         guard !hasStartedObservingNewActivities && ADUser.current.hasFinishedOnboarding else { return }
         
         hasStartedObservingNewActivities = true
@@ -628,7 +714,7 @@ extension HealthKitActivitiesStore {
 
 }
 
-fileprivate extension UserDefaults {
+extension UserDefaults {
     var lastNotificationDate: Date {
         get {
             if object(forKey: "lastNotificationDate") == nil {
