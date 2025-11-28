@@ -677,6 +677,7 @@
 		7D8B09552899B7890011D8C9 /* RecordingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8B09542899B7890011D8C9 /* RecordingSettingsView.swift */; };
 		7D8B09572899B7E40011D8C9 /* RecordingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8B09562899B7E40011D8C9 /* RecordingSettings.swift */; };
 		7DB5D0112885F2820020AA1B /* Split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB5D0102885F2820020AA1B /* Split.swift */; };
+		A68193C82ED9CCA000CC95E0 /* ComponentPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68193C72ED9CCA000CC95E0 /* ComponentPreviews.swift */; };
 		B570BAA12046B7E4457452B3 /* Pods_ADAC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D558CB6CD688CF281CAC27 /* Pods_ADAC.framework */; };
 /* End PBXBuildFile section */
 
@@ -1372,6 +1373,7 @@
 		7D8B09562899B7E40011D8C9 /* RecordingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingSettings.swift; sourceTree = "<group>"; };
 		7DB5D0102885F2820020AA1B /* Split.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Split.swift; sourceTree = "<group>"; };
 		84D558CB6CD688CF281CAC27 /* Pods_ADAC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ADAC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A68193C72ED9CCA000CC95E0 /* ComponentPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentPreviews.swift; sourceTree = "<group>"; };
 		D9478FF43539C2F826D0CA8A /* Pods-ADAC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ADAC.debug.xcconfig"; path = "Target Support Files/Pods-ADAC/Pods-ADAC.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2057,6 +2059,7 @@
 				4C7A4DF6286D3210001E35EE /* BackgroundClearView.swift */,
 				4C7A4DEE286CBAE6001E35EE /* TableViewCell.swift */,
 				4C9E4A8C287F56780039A651 /* ConfettiSwiftUIView.swift */,
+				A68193C72ED9CCA000CC95E0 /* ComponentPreviews.swift */,
 				4CFB4E87297B2A3300268E65 /* CollectiblesCarousel.swift */,
 				4CFE4CC1297F032300115858 /* SwiftUILoadingButton.swift */,
 				4C7BD63029A7EB1500405E0B /* CurvedTextAnimationView.swift */,
@@ -3330,9 +3333,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ADAC/Pods-ADAC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ADAC/Pods-ADAC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3529,6 +3536,7 @@
 				4C449D822836CA44006B5C68 /* ItemType.swift in Sources */,
 				4C27B7E22592B08100FAAE8E /* StatisticType.swift in Sources */,
 				4CFE4CC6297F1B7900115858 /* KeychainAccess.swift in Sources */,
+				A68193C82ED9CCA000CC95E0 /* ComponentPreviews.swift in Sources */,
 				4C854B422821872A0045DCB7 /* CollectibleLoader.swift in Sources */,
 				4C13B8E725AFC6E200ED0980 /* SettingsViewController.swift in Sources */,
 				7AD405782981B9EB0070216C /* DataEntryView.swift in Sources */,
