@@ -37,6 +37,11 @@ struct SignIn: View {
             .shadow(color: .black.opacity(0.4), radius: 12)
             .padding(.bottom, 20)
 
+            #if DEBUG
+            MockModeButton()
+                .padding(.bottom, 12)
+            #endif
+
             PrivacyAndTerms(topText: "By signing in you agree to our")
         }
         .padding([.leading, .trailing], 25)
@@ -45,6 +50,35 @@ struct SignIn: View {
         }
     }
 }
+
+#if DEBUG
+/// A button that enables mock mode and bypasses authentication (DEBUG only)
+struct MockModeButton: View {
+    var body: some View {
+        Button {
+            MockMode.shared.enable()
+            UIApplication.shared.transitionToTabBar()
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "theatermasks.fill")
+                Text("Demo Mode")
+                    .font(.system(size: 16, weight: .semibold))
+            }
+            .foregroundColor(.white.opacity(0.9))
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(Color.orange.opacity(0.3))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(Color.orange.opacity(0.6), lineWidth: 1)
+                    )
+            )
+        }
+    }
+}
+#endif
 
 struct SignIn_Previews: PreviewProvider {
     static var model: OnboardingViewModel {
