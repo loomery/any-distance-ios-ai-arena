@@ -15,6 +15,9 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
     #if DEBUG
     let DEBUG_APPLE_USER_ID: String? = nil
     let DEBUG_EMAIL: String? = nil
+    private var isMockModeEnabled: Bool {
+        MockModeManager.shared.isEnabled
+    }
     #else
     let DEBUG_APPLE_USER_ID: String? = nil
     let DEBUG_EMAIL: String? = nil
@@ -76,6 +79,12 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
             }
         }
     }
+    
+    #if DEBUG
+    func skipToDemoExperience() {
+        MockModeManager.shared.enableDemoExperience()
+    }
+    #endif
 
     func signInTopLeftButton() {
         if let signInVC = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "signIn") as? SignInViewController {
@@ -132,6 +141,11 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
     }
 
     func checkUsername() async throws -> Bool {
+        #if DEBUG
+        if isMockModeEnabled {
+            return true
+        }
+        #endif
         return try await UserManager.shared.checkAvailable(username: username)
     }
 
@@ -141,6 +155,11 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
     }
 
     private func updateUser() {
+        #if DEBUG
+        if isMockModeEnabled {
+            return
+        }
+        #endif
         Task {
             do {
                 try await UserManager.shared.updateUser(ADUser.current)

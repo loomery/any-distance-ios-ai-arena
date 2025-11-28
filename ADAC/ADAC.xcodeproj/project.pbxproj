@@ -78,6 +78,7 @@
 		4C16514B2588203100527C0F /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C16514A2588203100527C0F /* SignInViewController.swift */; };
 		4C1651502588203200527C0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C16514F2588203200527C0F /* Assets.xcassets */; };
 		4C16516025882A9700527C0F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C16515F25882A9700527C0F /* Extensions.swift */; };
+		4CFB12352C0CFE8F00ABCD12 /* MockModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFB12342C0CFE8F00ABCD12 /* MockModeManager.swift */; };
 		4C1651752588374E00527C0F /* SlideAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1651742588374E00527C0F /* SlideAnimationController.swift */; };
 		4C18A56A28DA126700A7C5C1 /* ReloadPublishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C18A56928DA126700A7C5C1 /* ReloadPublishers.swift */; };
 		4C1A99F429DA1BFA000EDC57 /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A99F329DA1BFA000EDC57 /* ZoomableScrollView.swift */; };
@@ -789,6 +790,7 @@
 		4C0A66B829AFEEEC00506EDE /* AccessCodeField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessCodeField.swift; sourceTree = "<group>"; };
 		4C0A66BB29B283FE00506EDE /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		4C0A66BD29B2843300506EDE /* Edge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		4CFB12342C0CFE8F00ABCD12 /* MockModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockModeManager.swift; sourceTree = "<group>"; };
 		4C1240B325B60D6C00289A6C /* LegacyActivityDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyActivityDesign.swift; sourceTree = "<group>"; };
 		4C1240B625B60DFB00289A6C /* LegacyActivityDesignCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyActivityDesignCache.swift; sourceTree = "<group>"; };
 		4C1240BF25BA199A00289A6C /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
@@ -1871,6 +1873,7 @@
 				4C4E36B22A4B775F00078193 /* WeatherFetcher.swift */,
 				4C09E7542BAA6179008EE60F /* UbiquitousKeyValueStoreMigrator.swift */,
 				4C3FAD9A2BC5AB530099FB23 /* SilentDeeplinkReporter.swift */,
+				4CFB12342C0CFE8F00ABCD12 /* MockModeManager.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3599,6 +3602,7 @@
 				4C94B3EE262109A100ACB404 /* StepCountGraphRenderer.swift in Sources */,
 				4C31556D25A5222F00774AE1 /* ScalingPressButton.swift in Sources */,
 				4C1651472588203100527C0F /* AppDelegate.swift in Sources */,
+				4CFB12352C0CFE8F00ABCD12 /* MockModeManager.swift in Sources */,
 				4C7BD62629A7E77700405E0B /* YourClubView.swift in Sources */,
 				4CF50D022947C09600CBB351 /* WearableMedalARView.swift in Sources */,
 				4C64AE3E2A704E2600EFE1B2 /* PreferenceKeys.swift in Sources */,

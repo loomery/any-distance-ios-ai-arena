@@ -27,6 +27,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UbiquitousKeyValueStoreMigrator.migrateIfNecessary()
         NSUbiquitousKeyValueStore.default.hasShownInitialPurchaseScreen = false
 
+        #if DEBUG
+        MockModeManager.shared.resumeIfNeeded()
+        #endif
+        
         Task(priority: .userInitiated) {
             await Edge.loadInitialAppState()
         }

@@ -21,6 +21,18 @@ class CollectibleLoader {
     // MARK: - Setup
 
     func loadCollectibles() async {
+        #if DEBUG
+        if MockModeManager.shared.isEnabled {
+            var dictionary: [String: RemoteCollectible] = [:]
+            for collectible in ADUser.current.collectibles {
+                if case .remote(let remote) = collectible.type {
+                    dictionary[remote.rawValue] = remote
+                }
+            }
+            self.remoteCollectibles = dictionary
+            return
+        }
+        #endif
         return await withCheckedContinuation { continuation in
             var fetchedCollectibles: [String: RemoteCollectible] = [:]
 

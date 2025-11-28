@@ -35,6 +35,13 @@ class Edge {
     }
 
     static func loadInitialAppState(loadFriendFinderState: Bool = true) async {
+        #if DEBUG
+        if MockModeManager.shared.isEnabled {
+            MockModeManager.shared.ensureCachesPrimed()
+            return
+        }
+        #endif
+        
         await withTaskGroup(of: Bool.self) { group in
             group.addTask {
                 await CollectibleLoader.shared.loadCollectibles()

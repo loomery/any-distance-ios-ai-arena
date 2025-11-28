@@ -15,6 +15,9 @@ import Sentry
 class PostManager {
     #if DEBUG
     let DEBUG: Bool = false // change this one to test
+    private var isMockModeEnabled: Bool {
+        MockModeManager.shared.isEnabled
+    }
     #else
     let DEBUG: Bool = false
     #endif
@@ -58,6 +61,19 @@ class PostManager {
     // MARK: - Create
 
     func createPost(_ post: Post) async throws {
+        #if DEBUG
+        if isMockModeEnabled {
+            await MainActor.run {
+                if post.id.isEmpty {
+                    post.id = UUID().uuidString
+                }
+                post.creationDate = Date()
+                MockModeManager.shared.add(post: post)
+                self.currentUserHasPostedThisWeek = true
+            }
+            return
+        }
+        #endif
         let url = baseUrl.appendingPathComponent("create")
         print(url.absoluteString)
         let payload = PostPayload(post: post)
@@ -97,6 +113,12 @@ class PostManager {
     // MARK: - Update
 
     func updatePost(_ post: Post) async throws {
+        #if DEBUG
+        if isMockModeEnabled {
+            MockModeManager.shared.add(post: post)
+            return
+        }
+        #endif
         let url = baseUrl.appendingPathComponent("update")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [
@@ -124,6 +146,13 @@ class PostManager {
     // MARK: - Delete
 
     func deletePost(_ post: Post) async throws {
+        #if DEBUG
+        if isMockModeEnabled {
+            MockModeManager.shared.remove(postID: post.id)
+            currentUserHasPostedThisWeek = hasCurrentUserHasPostedThisWeek()
+            return
+        }
+        #endif
         let url = baseUrl.appendingPathComponent("delete")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.queryItems = [
@@ -154,6 +183,11 @@ class PostManager {
                       before: String? = nil,
                       startDate: Date,
                       perPage: Int = 50) async throws -> [Post] {
+        #if DEBUG
+        if isMockModeEnabled {
+            return MockModeManager.shared.friendPosts().filter { $0.creatorUserID == userID }
+        }
+        #endif
         let url = baseUrl
             .appendingPathComponent("from")
             .appendingPathComponent("user")
@@ -187,6 +221,11 @@ class PostManager {
                         startDate: Date,
                         perPage: Int = 200,
                         includeUser: Bool = true) async throws -> [Post] {
+        #if DEBUG
+        if isMockModeEnabled {
+            return MockModeManager.shared.friendPosts()
+        }
+        #endif
         let url = baseUrl
             .appendingPathComponent("from")
             .appendingPathComponent("friends")
@@ -218,6 +257,11 @@ class PostManager {
     }
 
     func getPost(by id: Post.ID) async throws -> Post {
+        #if DEBUG
+        if isMockModeEnabled, let post = MockModeManager.shared.friendPosts().first(where: { $0.id == id }) {
+            return post
+        }
+        #endif
         let url = baseUrl
             .appendingPathComponent("find")
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -300,6 +344,15 @@ class PostManager {
             post.comments.append(comment)
         }
 
+        #if DEBUG
+        if isMockModeEnabled {
+            await MainActor.run {
+                PostCache.shared.cache(post: post, sendCachedPublisher: true)
+            }
+            return
+        }
+        #endif
+
         do {
             let url = Edge.host
                 .appendingPathComponent("comments")
@@ -373,6 +426,15 @@ class PostManager {
     }
 
     func deleteComment(with id: PostComment.ID, on post: Post) async throws {
+        #if DEBUG
+        if isMockModeEnabled {
+            await MainActor.run {
+                post.comments.removeAll(where: { $0.id == id })
+                PostCache.shared.cache(post: post, sendCachedPublisher: true)
+            }
+            return
+        }
+        #endif
         let url = Edge.host
             .appendingPathComponent("comments")
             .appendingPathComponent("delete")
@@ -407,6 +469,15 @@ class PostManager {
         await MainActor.run {
             post.reactions.append(reaction)
         }
+
+        #if DEBUG
+        if isMockModeEnabled {
+            await MainActor.run {
+                PostCache.shared.cache(post: post, sendCachedPublisher: true)
+            }
+            return
+        }
+        #endif
 
         do {
             let url = Edge.host
