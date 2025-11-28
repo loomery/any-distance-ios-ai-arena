@@ -97,6 +97,10 @@ struct OnboardingWelcomeView: View {
                     }
                 }
 
+                #if DEBUG
+                MockModeButton()
+                #endif
+
                 PrivacyAndTerms()
             }
             .frame(width: UIScreen.main.bounds.width)

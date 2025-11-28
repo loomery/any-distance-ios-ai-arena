@@ -2,7 +2,45 @@
 
 ## Overview
 
-This guide explains the current mock/debug infrastructure in the Any Distance iOS app and how to bypass login for testing and development.
+This guide explains the mock/debug infrastructure in the Any Distance iOS app and how to bypass login for testing and development.
+
+## Quick Start: Demo Mode (Recommended)
+
+**NEW:** The easiest way to test the app without authentication is to use **Demo Mode**.
+
+### How to Enable Demo Mode
+
+1. Build and run the app in DEBUG mode
+2. On the onboarding welcome screen OR the sign-in screen, tap the **"Demo Mode"** button (orange button with theater masks icon)
+3. The app will automatically:
+   - Create a mock user with demo data
+   - Populate activities, goals, and collectibles
+   - Bypass all authentication
+   - Navigate directly to the main app
+
+### What Demo Mode Provides
+
+- **Mock User**: A demo account with username `demo_runner`
+- **Mock Activities**: 30 days of varied activities (runs, walks, bike rides, hikes, yoga, swimming)
+- **Mock Collectibles**: Sample medals and achievements
+- **Mock Goals**: Active running and cycling goals with progress
+- **No Network Calls**: All data is local mock data
+
+### Demo Mode Limitations
+
+- Profile photos and cover photos may not load (uses placeholder)
+- Social features (friends, posts) show empty states
+- External service connections (Garmin, Wahoo) are not available
+- Push notifications are not functional
+
+### Code Location
+
+The Demo Mode implementation is in:
+- `MockMode.swift` - Core mock mode manager and data providers
+- `SignIn.swift` - Demo Mode button on sign-in screen
+- `OnboardingWelcomeView.swift` - Demo Mode button on welcome screen
+
+---
 
 ## Current Infrastructure
 
