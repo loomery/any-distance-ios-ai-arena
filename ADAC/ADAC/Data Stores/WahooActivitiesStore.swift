@@ -46,6 +46,11 @@ class WahooActivitiesStore: ActivitiesProviderStore {
     }
     
     func load() async throws -> [Activity] {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return []
+        }
+        #endif
         guard let workoutsURL = URL(string: "https://api.wahooligan.com/v1/workouts") else {
             print("Invalid URL for Wahoo Activities")
             return []

@@ -168,6 +168,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+#if DEBUG
+class MockMode {
+    static var isEnabled = false
+}
+#endif
+
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
