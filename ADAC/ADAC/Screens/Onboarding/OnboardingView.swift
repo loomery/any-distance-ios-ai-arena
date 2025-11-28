@@ -268,6 +268,19 @@ struct OnboardingView: View {
                                 .contentShape(Rectangle())
                         }
                         .modifier(BlurOpacityTransition(speed: 2.0))
+
+                        #if DEBUG
+                        Button {
+                            model.bypassLogin()
+                        } label: {
+                            Text("Bypass Login")
+                                .font(.system(size: 16, weight: .medium))
+                                .padding()
+                                .contentShape(Rectangle())
+                                .foregroundColor(.red)
+                        }
+                        .modifier(BlurOpacityTransition(speed: 2.0))
+                        #endif
                     default:
                         EmptyView()
                     }

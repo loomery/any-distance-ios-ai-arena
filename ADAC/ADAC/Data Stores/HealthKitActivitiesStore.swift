@@ -139,6 +139,12 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
 
     func requestAuthorization(with analyticsScreenName: String, onSuccess: (() -> Void)? = nil) {
+        #if DEBUG
+        if MockMode.isEnabled {
+            onSuccess?()
+            return
+        }
+        #endif
         let split = NSUbiquitousKeyValueStore.default.split(for: AndiHealthAuth.self)
         split.sendAnalytics()
         switch split {
@@ -197,6 +203,11 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
     
     func loadLatestActivity() async -> Activity? {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return MockActivity()
+        }
+        #endif
         guard hasRequestedAuthorization() else {
             return nil
         }
@@ -225,6 +236,11 @@ class HealthKitActivitiesStore: ActivitiesProviderStore {
     }
     
     func load() async throws -> [Activity] {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return [MockActivity(), MockActivity(id: "mock_2", startDate: Date().addingTimeInterval(-86400))]
+        }
+        #endif
         guard hasRequestedAuthorization() else {
             return []
         }
@@ -688,3 +704,26 @@ public extension NSUbiquitousKeyValueStore {
         return object(forKey: "bodyMassKg") != nil
     }
 }
+
+#if DEBUG
+struct MockActivity: Activity {
+    var id: String = UUID().uuidString
+    var activityType: ActivityType = .run
+    var distance: Float = 5000
+    var movingTime: TimeInterval = 1800
+    var startDate: Date = Date()
+    var startDateLocal: Date = Date()
+    var endDate: Date = Date().addingTimeInterval(1800)
+    var endDateLocal: Date = Date().addingTimeInterval(1800)
+    var activeCalories: Float = 300
+    var totalElevationGain: Float = 50
+    var stepCount: Int? = 5000
+    var workoutSource: HealthKitWorkoutSource? = .anyDistance
+    var clipsRoute: Bool = false
+    var coordinates: [CLLocation] = []
+    
+    var distanceInUserSelectedUnit: Float {
+        return UnitConverter.meters(distance, toUnit: ADUser.current.distanceUnit)
+    }
+}
+#endif

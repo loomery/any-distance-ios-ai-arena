@@ -22,6 +22,11 @@ class UserManager {
     private let baseUrl = Edge.host.appendingPathComponent("users")
 
     func loadUserState() async {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return
+        }
+        #endif
         guard !ADUser.current.appleSignInID.isEmpty else {
             self.identifyInConnectedServices()
             return
@@ -56,6 +61,11 @@ class UserManager {
     // MARK: - Sign In
 
     func signIn(withId id: String, _ name: PersonNameComponents?, _ email: String?) async {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return
+        }
+        #endif
         do {
             // Try fetching by appleSignInID in Edge
             let user = try await getUsers(byAppleIDs: [id],
@@ -291,6 +301,11 @@ class UserManager {
 
     @discardableResult
     func fetchCurrentUser() async -> ADUser? {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return .current
+        }
+        #endif
         do {
             // Fetch current user from Edge
             try await getMe()
@@ -313,6 +328,11 @@ class UserManager {
 
     @discardableResult
     func getMe() async throws -> CurrentUserResponsePayload {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return CurrentUserResponsePayload(user: UserPayload.PayloadData(), friends: [], friendships: [], blocks: [])
+        }
+        #endif
         let url = Edge.host.appendingPathComponent("me")
         let request = try Edge.defaultRequest(with: url, method: .get)
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -383,6 +403,11 @@ class UserManager {
                           value: String,
                           isSearch: Bool = false,
                           hydrateAllCollectibles: Bool) async throws -> [ADUser] {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return []
+        }
+        #endif
         var body: String = ""
         body.append("\(field)=\(value)")
         if isSearch {

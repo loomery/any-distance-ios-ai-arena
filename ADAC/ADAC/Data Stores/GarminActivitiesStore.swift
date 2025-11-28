@@ -37,6 +37,11 @@ class GarminActivitiesStore: ActivitiesProviderStore {
     }
     
     func load() async throws -> [Activity] {
+        #if DEBUG
+        if MockMode.isEnabled {
+            return []
+        }
+        #endif
         guard let response = try await getRequest() else {
             return []
         }

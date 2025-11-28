@@ -85,6 +85,25 @@ class OnboardingViewModel: NSObject, ObservableObject, SignInViewControllerDeleg
         }
     }
 
+    #if DEBUG
+    func bypassLogin() {
+        MockMode.isEnabled = true
+        
+        let mockUser = ADUser()
+        mockUser.id = "mock_user_id"
+        mockUser.username = "mockuser"
+        mockUser.name = "Mock User"
+        mockUser.email = "mock@example.com"
+        mockUser.phoneNumber = "+15555555555"
+        mockUser.hasFinishedOnboarding = true
+        mockUser.signupDate = Date()
+        
+        ADUser.current = mockUser
+        
+        advancePastWelcome()
+    }
+    #endif
+
     func resetPageTimer() {
         pageTimer?.invalidate()
         pageTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { _ in
