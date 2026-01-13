@@ -16,6 +16,7 @@ struct UsernameTappableAttributedText: View {
     var taggedColor: UIColor = .adOrangeLighter
     @Binding var layoutWidth: CGFloat?
     @Binding var layoutHeight: CGFloat?
+    var onUsernameTapped: ((String) -> Void)? = nil
 
     private func wordTapped(_ range: Range<String.Index>) {
         let string = String(attributedText.characters)
@@ -26,6 +27,12 @@ struct UsernameTappableAttributedText: View {
         if attributedText[attrStringRange].foregroundColor == taggedColor {
             // Tapped a username (because it's orange)
             let username = String(string[range])
+            if let onUsernameTapped {
+                DispatchQueue.main.async {
+                    onUsernameTapped(username)
+                }
+                return
+            }
             Task {
                 let user: ADUser? = await {
                     if let user = UserCache.shared.user(for: username) {
@@ -180,3 +187,63 @@ struct TappableAttributedText: UIViewRepresentable {
         }
     }
 }
+
+#if DEBUG
+private struct UsernameTappableAttributedTextPreview: View {
+    @State private var layoutWidth: CGFloat?
+    @State private var layoutHeight: CGFloat?
+    @State private var maxWidth: Double = 280
+    @State private var tappedUsername: String = "None yet"
+
+    init() {
+        SwiftUIUtilitiesPreviewSupport.seedUserCacheIfNeeded()
+    }
+
+    private var attributedString: AttributedString {
+        var text = AttributedString("Rally with @avery and @max for a sun-soaked ride through downtown.")
+        ["@avery", "@max"].forEach { username in
+            let plain = String(text.characters)
+            if let stringRange = plain.range(of: username),
+               let lower = AttributedString.Index(stringRange.lowerBound, within: text),
+               let upper = AttributedString.Index(stringRange.upperBound, within: text) {
+                let attrRange = lower..<upper
+                text[attrRange].foregroundColor = UIColor.adOrangeLighter
+                text[attrRange].font = .boldSystemFont(ofSize: 16)
+            }
+        }
+        return text
+    }
+
+    var body: some View {
+        VStack(spacing: 24) {
+            UsernameTappableAttributedText(attributedText: attributedString,
+                                           maxWidth: maxWidth,
+                                           layoutWidth: $layoutWidth,
+                                           layoutHeight: $layoutHeight,
+                                           onUsernameTapped: { username in
+                                               tappedUsername = username
+                                           })
+                .frame(width: maxWidth)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(Color(.systemGray6)))
+
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Width \(Int(maxWidth))")
+                    Slider(value: $maxWidth, in: 180...320)
+                }
+                Text("Calculated size: \(Int(layoutWidth ?? 0)) × \(Int(layoutHeight ?? 0))")
+                Text("Last tap: \(tappedUsername)")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Username Tappable Text") {
+    UsernameTappableAttributedTextPreview()
+}
+#endif

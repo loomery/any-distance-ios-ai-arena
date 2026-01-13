@@ -19,31 +19,55 @@ class ParallelImageLoader {
                                              qos: .userInitiated)
 
     static func loadImage(with url: URL, completion: ((UIImage?) -> Void)? = nil) {
+        var shouldStartLoad = false
         queue.sync {
             if let observers = urlObservers[url.absoluteString] {
                 urlObservers[url.absoluteString] = observers + [completion]
+            } else {
+                urlObservers[url.absoluteString] = [completion]
+                shouldStartLoad = true
+            }
+        }
+
+        guard shouldStartLoad else {
+            return
+        }
+
+        Task(priority: .userInitiated) {
+            if url.isFileURL {
+                let image: UIImage?
+                if let data = try? Data(contentsOf: url) {
+                    image = UIImage(data: data)
+                } else {
+                    image = nil
+                }
+                notifyObservers(for: url, image: image)
                 return
             }
-            urlObservers[url.absoluteString] = [{ completion?($0) }]
 
-            Task(priority: .userInitiated) {
-                guard let request = try? URLRequest(url: url, method: .get) else {
-                    return
-                }
+            guard let request = try? URLRequest(url: url, method: .get) else {
+                notifyObservers(for: url, image: nil)
+                return
+            }
+
+            do {
                 let (data, _) = try await URLSession.shared.data(for: request)
-                guard let image = UIImage(data: data) else {
-                    return
-                }
+                let image = UIImage(data: data)
+                notifyObservers(for: url, image: image)
+            } catch {
+                notifyObservers(for: url, image: nil)
+            }
+        }
+    }
 
-                queue.sync {
-                    if let observers = urlObservers[url.absoluteString] {
-                        observers.forEach { observer in
-                            observer?(image)
-                        }
-                    }
-                    urlObservers[url.absoluteString] = nil
+    private static func notifyObservers(for url: URL, image: UIImage?) {
+        queue.sync {
+            if let observers = urlObservers[url.absoluteString] {
+                observers.forEach { observer in
+                    observer?(image)
                 }
             }
+            urlObservers[url.absoluteString] = nil
         }
     }
 }
@@ -320,3 +344,87 @@ struct AsyncCachedImage: View {
         }
     }
 }
+
+#if DEBUG
+private struct AsyncCachedImagePreviewGallery: View {
+    private enum Scenario: String, CaseIterable, Identifiable {
+        case localSuccess = "Local Image"
+        case missingFile = "Missing File"
+        case emptyURL = "Nil URL"
+
+        var id: String { rawValue }
+    }
+
+    @State private var scenario: Scenario = .localSuccess
+    @State private var showsIndicator: Bool = true
+    @State private var width: Double = 160
+    @State private var loadedImage: UIImage?
+    @State private var localImageURL: URL = SwiftUIUtilitiesPreviewSupport.makeLocalImageURL()
+
+    private var url: URL? {
+        switch scenario {
+        case .localSuccess:
+            return localImageURL
+        case .missingFile:
+            return URL(fileURLWithPath: NSTemporaryDirectory())
+                .appending(path: "missing-preview.png")
+        case .emptyURL:
+            return nil
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 24) {
+            AsyncCachedImage(url: url,
+                             resizeToWidth: width,
+                             loadedImage: $loadedImage,
+                             showsLoadingIndicator: showsIndicator)
+                .frame(width: width, height: width)
+                .background(Color.gray.opacity(0.2))
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .overlay(alignment: .bottomTrailing) {
+                    if let loadedImage {
+                        Text("\(Int(loadedImage.size.width))px")
+                            .font(.caption2)
+                            .padding(6)
+                            .background(.thinMaterial, in: Capsule())
+                            .padding(8)
+                    }
+                }
+
+            VStack(alignment: .leading, spacing: 12) {
+                Picker("Scenario", selection: $scenario) {
+                    ForEach(Scenario.allCases) { option in
+                        Text(option.rawValue).tag(option)
+                    }
+                }
+                .pickerStyle(.segmented)
+
+                Toggle("Show Loading Indicator", isOn: $showsIndicator)
+
+                HStack {
+                    Text("Resize Width \(Int(width))")
+                    Slider(value: $width, in: 120...280)
+                }
+
+                Button("Generate New Local Image") {
+                    localImageURL = SwiftUIUtilitiesPreviewSupport.makeLocalImageURL(
+                        symbolName: "photo",
+                        background: UIColor(hue: .random(in: 0...1),
+                                            saturation: 0.6,
+                                            brightness: 0.9,
+                                            alpha: 1.0)
+                    )
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+    }
+}
+
+#Preview("Async Cached Image States") {
+    AsyncCachedImagePreviewGallery()
+}
+#endif

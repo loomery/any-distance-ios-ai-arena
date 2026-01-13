@@ -57,3 +57,33 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
         }
     }
 }
+
+#if DEBUG
+private struct ZoomableScrollViewPreview: View {
+    var body: some View {
+        ZoomableScrollView {
+            ZStack {
+                Color.black
+                Image("activity_run")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+            }
+        }
+        .frame(height: 260)
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(
+            Text("Pinch/zoom the glyph")
+                .font(.caption)
+                .padding(8),
+            alignment: .bottom
+        )
+        .padding()
+        .background(Color(.systemGray6))
+    }
+}
+
+#Preview("Zoomable Scroll View") {
+    ZoomableScrollViewPreview()
+}
+#endif

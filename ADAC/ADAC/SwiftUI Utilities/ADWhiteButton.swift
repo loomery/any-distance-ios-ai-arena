@@ -41,3 +41,36 @@ struct RoundedWhiteButtonLabel: View {
         }
     }
 }
+
+#if DEBUG
+private struct ADWhiteButtonPreviewGallery: View {
+    @State private var buttonTitle: String = "Continue"
+    @State private var tapCount: Int = 0
+
+    var body: some View {
+        VStack(spacing: 24) {
+            ADWhiteButton(title: buttonTitle) {
+                tapCount += 1
+            }
+            .frame(maxWidth: 240)
+
+            RoundedWhiteButtonLabel(text: "Compact Label")
+                .frame(width: 180, height: 52)
+
+            VStack(spacing: 12) {
+                TextField("Button Title", text: $buttonTitle)
+                    .textFieldStyle(.roundedBorder)
+                Text("Tapped \(tapCount) time\(tapCount == 1 ? "" : "s")")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+    }
+}
+
+#Preview("White Buttons") {
+    ADWhiteButtonPreviewGallery()
+}
+#endif

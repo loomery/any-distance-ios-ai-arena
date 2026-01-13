@@ -159,6 +159,59 @@ struct TaggableTextField: View {
     }
 }
 
+#if DEBUG
+private struct TaggableTextFieldPreviewGallery: View {
+    @State private var composingText: String = ""
+    @State private var prefilledText: String = "@avery crushed @max on the climb!"
+
+    init() {
+        SwiftUIUtilitiesPreviewSupport.seedUserCacheIfNeeded()
+    }
+
+    var body: some View {
+        VStack(spacing: 24) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Compose")
+                    .font(.headline)
+                TaggableTextField(placeholder: "Tag friends with @",
+                                  text: $composingText,
+                                  axis: .vertical,
+                                  returnKeyType: .default,
+                                  font: .systemFont(ofSize: 18, weight: .medium))
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(Color(.systemGray6)))
+                Text(composingText.isEmpty ? "Start typing…" : composingText)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Prefilled")
+                    .font(.headline)
+                TaggableTextField(placeholder: "Talk about your run",
+                                  text: $prefilledText,
+                                  axis: .vertical,
+                                  returnKeyType: .done,
+                                  font: .systemFont(ofSize: 16),
+                                  onCommit: {
+                                      print("Committed text: \(prefilledText)")
+                                  })
+                    .padding()
+                    .background(RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(Color(.systemGray5)))
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Taggable Text Field") {
+    TaggableTextFieldPreviewGallery()
+        .preferredColorScheme(.dark)
+}
+#endif
+
 fileprivate struct AttributedTextField: UIViewRepresentable {
     @Binding var attributedText: AttributedString
     @Binding var height: CGFloat

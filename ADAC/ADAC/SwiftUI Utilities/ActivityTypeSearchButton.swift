@@ -52,3 +52,43 @@ struct ActivityTypeSearchButton: View {
         }
     }
 }
+
+#if DEBUG
+private struct ActivityTypeSearchButtonPreviewGallery: View {
+    @State private var selectedType: ActivityType = .run
+
+    var body: some View {
+        VStack(spacing: 24) {
+            ActivityTypeSearchButton(activityType: $selectedType)
+                .padding()
+                .background(
+                    Color.black
+                        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                )
+
+            Menu {
+                Picker("Activity", selection: $selectedType) {
+                    ForEach(ActivityType.allCases.prefix(12), id: \.self) { type in
+                        Text(type.displayName).tag(type)
+                    }
+                }
+            } label: {
+                Label("Change Activity (\(selectedType.displayName))", systemImage: "list.bullet")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+
+            Text("Tap the button to see the sheet transition and use the menu to explore other glyphs.")
+                .font(.footnote)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding(24)
+        .background(Color(.systemGray6))
+    }
+}
+
+#Preview("Activity Type Search") {
+    ActivityTypeSearchButtonPreviewGallery()
+}
+#endif

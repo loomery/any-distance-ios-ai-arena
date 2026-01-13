@@ -138,3 +138,70 @@ struct RefreshableScrollView<Content: View>: View {
         }
     }
 }
+
+#if DEBUG
+private struct SwiftUIScrollUtilitiesPreview: View {
+    @State private var readableOffset: CGFloat = .zero
+    @State private var readableContentSize: CGSize = .zero
+    @State private var presentedInSheet: Bool = false
+    @State private var showsIndicators: Bool = true
+
+    @State private var refreshOffset: CGFloat = .zero
+    @State private var isRefreshing: Bool = false
+
+    var body: some View {
+        VStack(spacing: 24) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("ReadableScrollView")
+                    .font(.headline)
+                ReadableScrollView(offset: $readableOffset,
+                                   contentSize: $readableContentSize,
+                                   presentedInSheet: presentedInSheet,
+                                   showsIndicators: showsIndicators) {
+                    ForEach(0..<12) { idx in
+                        Text("Row \(idx + 1)")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                    }
+                }
+                .frame(height: 200)
+                Text("Offset: \(Int(readableOffset)) | Content Height: \(Int(readableContentSize.height))")
+                    .font(.caption)
+                Toggle("Presented In Sheet", isOn: $presentedInSheet)
+                Toggle("Show Indicators", isOn: $showsIndicators)
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("RefreshableScrollView")
+                    .font(.headline)
+                RefreshableScrollView(offset: $refreshOffset,
+                                      isRefreshing: $isRefreshing) {
+                    ForEach(0..<8) { idx in
+                        Text("Feed item \(idx + 1)")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(.systemGray5))
+                            .cornerRadius(12)
+                    }
+                }
+                .frame(height: 200)
+                Text("Refresh Offset: \(Int(refreshOffset)) | Refreshing: \(isRefreshing.description)")
+                    .font(.caption)
+                Button(isRefreshing ? "End Refresh" : "Trigger Refresh") {
+                    isRefreshing.toggle()
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Readable & Refreshable Scroll Views") {
+    SwiftUIScrollUtilitiesPreview()
+}
+#endif

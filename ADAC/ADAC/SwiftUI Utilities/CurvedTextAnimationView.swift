@@ -95,3 +95,34 @@ struct CurvedTextAnimationView: View {
         }
     }
 }
+
+#if DEBUG
+private struct CurvedTextAnimationPreview: View {
+    @State private var text: String = "ANY DISTANCE"
+    @State private var radius: Double = 120
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Spacer()
+            
+            CurvedTextAnimationView(text: text, radius: radius)
+                .frame(width: 260, height: radius + 40)
+            
+            Spacer()
+
+            TextField("Text", text: $text)
+                .textFieldStyle(.roundedBorder)
+
+            HStack {
+                Text("Radius \(Int(radius))")
+                Slider(value: $radius, in: 80...200)
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Curved Text Animation") {
+    CurvedTextAnimationPreview()
+}
+#endif

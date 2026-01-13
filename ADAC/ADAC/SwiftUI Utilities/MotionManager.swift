@@ -9,16 +9,20 @@
 import SwiftUI
 import CoreMotion
 
-final class MotionManager: ObservableObject {
+class MotionManager: ObservableObject {
     @Published var pitch: Double = 0.0
     @Published var roll: Double = 0.0
 
-    private var manager: CMMotionManager
+    let manager: CMMotionManager
 
-    init() {
-        self.manager = CMMotionManager()
+    init(manager: CMMotionManager = CMMotionManager()) {
+        self.manager = manager
         self.manager.deviceMotionUpdateInterval = 1/60
-        self.manager.startDeviceMotionUpdates(to: .main) { [weak self] (motionData, error) in
+        startUpdates()
+    }
+
+    func startUpdates() {
+        manager.startDeviceMotionUpdates(to: .main) { [weak self] motionData, error in
             guard error == nil else {
                 print(error!)
                 return

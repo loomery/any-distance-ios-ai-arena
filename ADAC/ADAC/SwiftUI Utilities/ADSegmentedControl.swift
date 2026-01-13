@@ -62,15 +62,42 @@ struct ADSegmentedControl: View {
     }
 }
 
-fileprivate struct PreviewWrapper: View {
-    @State var selectedIdx: Int = 0
+#if DEBUG
+private struct ADSegmentedControlPreviewGallery: View {
+    @State private var selectedIdx: Int = 0
+    @State private var showBackground: Bool = true
+    @State private var fontSize: CGFloat = 15
+    @State private var segmentCount: Int = 3
+
+    private var segments: [String] {
+        (0..<segmentCount).map { "Option \($0 + 1)" }
+    }
 
     var body: some View {
-        ADSegmentedControl(segments: ["Segment 1", "Segment 2", "Segment 3"],
-                           selectedSegmentIdx: $selectedIdx)
+        VStack(spacing: 24) {
+            ADSegmentedControl(segments: segments,
+                               fontSize: fontSize,
+                               showBg: showBackground,
+                               selectedSegmentIdx: $selectedIdx)
+                .padding(.horizontal)
+
+            VStack(spacing: 16) {
+                Stepper("Segments (\(segmentCount))", value: $segmentCount, in: 2...5)
+                Toggle("Show Blur Background", isOn: $showBackground)
+                HStack {
+                    Text("Font \(Int(fontSize))")
+                    Slider(value: $fontSize, in: 12...22)
+                }
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color(.systemGray6)))
+        }
+        .padding()
     }
 }
 
-#Preview {
-    PreviewWrapper()
+#Preview("AD Segmented Control") {
+    ADSegmentedControlPreviewGallery()
 }
+#endif

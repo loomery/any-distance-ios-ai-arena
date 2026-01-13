@@ -274,3 +274,50 @@ class TouchEventPassingUIView: UIView {
         touchesEndedHandler?(touches, event)
     }
 }
+
+#if DEBUG
+private struct ReactionWheelPreview: View {
+    @State private var showsReactions: Bool = true
+    @State private var showingReactions: Bool = false
+    @State private var touchingDown: Bool = false
+    @State private var lastReaction: PostReactionType?
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Press & hold to react")
+                .font(.title3.weight(.semibold))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.black)
+                .cornerRadius(24)
+                .modifier(ReactionWheel(showsReactions: $showsReactions,
+                                        showingReactions: $showingReactions,
+                                        touchingDown: $touchingDown,
+                                        onReact: { reaction in
+                                            lastReaction = reaction
+                                        }, onTap: {
+                                            lastReaction = .heart
+                                        }))
+                .frame(height: 140)
+
+            VStack(alignment: .leading, spacing: 12) {
+                Toggle("Enable Reactions", isOn: $showsReactions)
+                Text("Currently \(showingReactions ? "showing" : "hidden")")
+                    .font(.caption)
+                Text("Last reaction: \(lastReaction?.emoji ?? "None")")
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(16)
+        }
+        .padding()
+        .background(Color(.systemBackground))
+    }
+}
+
+#Preview("Reaction Wheel Modifier") {
+    ReactionWheelPreview()
+        .preferredColorScheme(.dark)
+}
+#endif

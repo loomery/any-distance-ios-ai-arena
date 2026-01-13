@@ -124,3 +124,47 @@ class TappableUIView: UIView {
         fatalError()
     }
 }
+
+#if DEBUG
+private struct TappableScrollViewPreview: View {
+    @State private var taps: Int = 0
+    @State private var isPressed: Bool = false
+
+    var body: some View {
+        VStack(spacing: 24) {
+            TappableScrollView {
+                VStack(spacing: 12) {
+                    ForEach(0..<10) { idx in
+                        Text("Message \(idx + 1)")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(12)
+                    }
+                }
+                .padding()
+            }
+            .frame(height: 200)
+
+            ZStack {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(isPressed ? Color.orange.opacity(0.7) : Color.blue.opacity(0.6))
+                    .frame(height: 60)
+                Text("Tap or press me (\(taps))")
+                    .foregroundColor(.white)
+                    .font(.headline)
+            }
+            .overlay(
+                TappableView(onTap: { taps += 1 },
+                             onPress: { isPressed = $0 },
+                             pressDuration: 0.15)
+            )
+        }
+        .padding()
+    }
+}
+
+#Preview("Tappable Scroll") {
+    TappableScrollViewPreview()
+}
+#endif

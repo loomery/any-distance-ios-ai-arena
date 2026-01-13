@@ -192,3 +192,49 @@ open class VariableBlurUIView: UIVisualEffectView {
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {}
 }
+
+#if DEBUG
+private struct BlurViewPreviewGallery: View {
+    @State private var intensity: Double = 0.8
+    @State private var animateIn: Bool = false
+    @State private var animateOut: Bool = false
+
+    var body: some View {
+        VStack(spacing: 24) {
+            HStack(spacing: 16) {
+                DarkBlurView()
+                    .frame(width: 120, height: 120)
+                    .overlay(Text("Dark").foregroundColor(.white))
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                LightBlurView()
+                    .frame(width: 120, height: 120)
+                    .overlay(Text("Light").foregroundColor(.black))
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            }
+
+            BlurView(style: .systemUltraThinMaterial,
+                     intensity: intensity,
+                     animatesIn: animateIn,
+                     animateOut: animateOut)
+                .frame(height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(Text("Custom blur")
+                    .font(.headline))
+
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Text("Intensity \(intensity, specifier: "%.2f")")
+                    Slider(value: $intensity, in: 0...1)
+                }
+                Toggle("Animate In", isOn: $animateIn)
+                Toggle("Animate Out", isOn: $animateOut)
+            }
+        }
+        .padding()
+    }
+}
+
+#Preview("Blur Variants") {
+    BlurViewPreviewGallery()
+}
+#endif

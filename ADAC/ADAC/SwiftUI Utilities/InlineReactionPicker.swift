@@ -118,3 +118,45 @@ struct InlineReactionPicker: View {
         }
     }
 }
+
+#if DEBUG
+private struct InlineReactionPickerPreviewGallery: View {
+    @State private var heartFilled: Bool = false
+    @State private var showingInlineReactions: Bool = false
+    @State private var lastReaction: PostReactionType?
+
+    var body: some View {
+        VStack(spacing: 24) {
+            InlineReactionPicker(heartFilled: $heartFilled,
+                                 showingInlineReactions: $showingInlineReactions) { reaction in
+                lastReaction = reaction
+            }
+            .background(Color(.systemGray5))
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+
+            VStack(alignment: .leading, spacing: 12) {
+                Toggle("Show Inline Reactions", isOn: $showingInlineReactions)
+                Toggle("Heart Filled", isOn: $heartFilled)
+                if let lastReaction {
+                    Text("Last reaction: \(lastReaction.emoji) \(lastReaction.rawValue.capitalized)")
+                        .font(.callout)
+                } else {
+                    Text("Pick a reaction to see the callback.").font(.callout)
+                }
+
+                Button("Reset") {
+                    heartFilled = false
+                    showingInlineReactions = false
+                    lastReaction = nil
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+    }
+}
+
+#Preview("Inline Reaction Picker") {
+    InlineReactionPickerPreviewGallery()
+}
+#endif
