@@ -22,3 +22,13 @@ struct LightBlurGlyph: View {
             }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 40) {
+            LightBlurGlyph(symbolName: "star.fill", size: 50)
+            LightBlurGlyph(symbolName: "heart.fill", size: 80)
+        }
+    }
+}

@@ -57,3 +57,16 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        ZoomableScrollView {
+            Image(systemName: "photo.artframe")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 300, height: 300)
+                .foregroundColor(.white)
+        }
+    }
+}

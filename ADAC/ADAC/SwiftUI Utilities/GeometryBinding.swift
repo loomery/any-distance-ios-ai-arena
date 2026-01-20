@@ -39,3 +39,29 @@ private struct GeometryPreference: PreferenceKey {
         value = nextValue()
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        GeometryBindingWrapper()
+    }
+}
+
+private struct GeometryBindingWrapper: View {
+    @State private var width: CGFloat = 0
+    
+    var body: some View {
+        VStack {
+            Text("Width: \(Int(width))")
+                .foregroundColor(.white)
+            
+            Rectangle()
+                .fill(Color.blue)
+                .frame(height: 100)
+                .padding()
+                .bindGeometry(to: $width) { proxy in
+                    proxy.size.width
+                }
+        }
+    }
+}

@@ -22,3 +22,13 @@ struct GIFView: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIImageView, context: Context) {}
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        // Note: This requires a valid GIF name in the asset catalog to work properly.
+        // Using a placeholder name for demonstration.
+        GIFView(gifName: "confetti")
+            .frame(width: 200, height: 200)
+    }
+}

@@ -306,3 +306,26 @@ extension UITextView: UITextViewDelegate {
         placeholderLabel?.isHidden = !text.isEmpty
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        TaggableTextFieldWrapper()
+    }
+}
+
+private struct TaggableTextFieldWrapper: View {
+    @State private var text = "Hello @world"
+    
+    var body: some View {
+        TaggableTextField(placeholder: "Type something...",
+                          text: $text,
+                          axis: .horizontal,
+                          returnKeyType: .done,
+                          font: .systemFont(ofSize: 17))
+            .padding()
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(8)
+            .padding()
+    }
+}

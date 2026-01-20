@@ -17,3 +17,20 @@ struct ScalingPressButtonStyle: ButtonStyle {
             .animation(.spring(response: 0.2, dampingFraction: 0.5), value: configuration.isPressed)
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        Button(action: {
+            print("Button pressed")
+        }) {
+            Text("Press Me")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+        }
+        .buttonStyle(ScalingPressButtonStyle())
+    }
+}

@@ -131,3 +131,13 @@ final class LoopingVideoUIView: UIView {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        // Note: This requires a valid video URL to work properly.
+        LoopingVideoView(videoUrl: URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"))
+            .frame(width: 300, height: 200)
+            .cornerRadius(12)
+    }
+}

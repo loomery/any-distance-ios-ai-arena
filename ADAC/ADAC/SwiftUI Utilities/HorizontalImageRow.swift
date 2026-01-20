@@ -297,3 +297,28 @@ struct HorizontalImageRow: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        HorizontalImageRowWrapper()
+    }
+}
+
+private struct HorizontalImageRowWrapper: View {
+    let collectibles: [Collectible] = [
+        Collectible(type: .activity(.mi_1), dateEarned: Date()),
+        Collectible(type: .activity(.mi_10), dateEarned: Date()),
+        Collectible(type: .activity(.mi_20), dateEarned: Date())
+    ]
+    
+    var body: some View {
+        HorizontalImageRow(imageSize: CGSize(width: 50, height: 50),
+                           imageSpacing: 10,
+                           collectibles: collectibles,
+                           alwaysAnimate: true) { collectible in
+            print("Tapped collectible: \(collectible.type)")
+        }
+        .frame(height: 60)
+    }
+}

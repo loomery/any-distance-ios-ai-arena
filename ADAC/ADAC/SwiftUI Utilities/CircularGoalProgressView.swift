@@ -24,3 +24,16 @@ struct CircularGoalProgressView: UIViewRepresentable {
         uiView.progress = progress
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        VStack(spacing: 40) {
+            CircularGoalProgressView(style: .small, progress: 0.3)
+                .frame(width: 50, height: 50)
+            
+            CircularGoalProgressView(style: .medium, progress: 0.75)
+                .frame(width: 100, height: 100)
+        }
+    }
+}

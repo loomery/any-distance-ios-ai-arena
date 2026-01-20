@@ -274,3 +274,34 @@ class TouchEventPassingUIView: UIView {
         touchesEndedHandler?(touches, event)
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        ReactionWheelWrapper()
+    }
+}
+
+private struct ReactionWheelWrapper: View {
+    @State private var showsReactions = true
+    @State private var showingReactions = false
+    @State private var touchingDown = false
+    
+    var body: some View {
+        VStack {
+            Text("Hold me!")
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.gray.opacity(0.5))
+                .cornerRadius(10)
+                .modifier(ReactionWheel(showsReactions: $showsReactions,
+                                        showingReactions: $showingReactions,
+                                        touchingDown: $touchingDown,
+                                        onReact: { reaction in
+                    print("Reacted: \(reaction.emoji)")
+                }, onTap: {
+                    print("Tapped")
+                }))
+        }
+    }
+}

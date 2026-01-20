@@ -41,3 +41,13 @@ struct Gear3DSwiftUIView: UIViewRepresentable {
         uiView.setColor(color: color)
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        Collectible3DSwiftUIView(collectible: Collectible(type: .activity(.mi_1), dateEarned: Date()),
+                                 earned: true,
+                                 engraveInitials: true)
+        .frame(width: 300, height: 300)
+    }
+}

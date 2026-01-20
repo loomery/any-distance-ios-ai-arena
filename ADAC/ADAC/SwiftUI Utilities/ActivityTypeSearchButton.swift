@@ -52,3 +52,10 @@ struct ActivityTypeSearchButton: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        ActivityTypeSearchButton(activityType: .constant(.run))
+    }
+}

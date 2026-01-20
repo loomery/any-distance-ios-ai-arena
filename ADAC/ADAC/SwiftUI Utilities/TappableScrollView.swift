@@ -124,3 +124,24 @@ class TappableUIView: UIView {
         fatalError()
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        TappableScrollView {
+            VStack(spacing: 20) {
+                ForEach(0..<20) { i in
+                    Text("Item \(i)")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            print("Tapped item \(i)")
+                        }
+                }
+            }
+            .padding()
+        }
+    }
+}

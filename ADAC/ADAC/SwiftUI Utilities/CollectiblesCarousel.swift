@@ -83,3 +83,25 @@ struct CollectiblesCarousel: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        CollectiblesCarouselWrapper()
+    }
+}
+
+private struct CollectiblesCarouselWrapper: View {
+    let collectibles: [Collectible] = [
+        Collectible(type: .activity(.mi_1), dateEarned: Date()),
+        Collectible(type: .activity(.mi_10), dateEarned: Date()),
+        Collectible(type: .activity(.mi_20), dateEarned: Date())
+    ]
+    
+    var body: some View {
+        CollectiblesCarousel(screenName: "Preview",
+                             collectibles: collectibles,
+                             areCurrentUsersCollectibles: true)
+        .frame(height: 200)
+    }
+}

@@ -21,3 +21,18 @@ struct ActivityRingView: UIViewRepresentable {
         activityRingView.setActivitySummary(summary, animated: true)
     }
 }
+
+#Preview {
+    let summary = HKActivitySummary()
+    summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 350)
+    summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 500)
+    summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 20)
+    summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 30)
+    summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 8)
+    summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 12)
+    
+    return ActivityRingView(summary: .constant(summary))
+        .frame(width: 200, height: 200)
+        .padding()
+        .background(Color.black)
+}

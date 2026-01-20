@@ -138,3 +138,51 @@ struct RefreshableScrollView<Content: View>: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        ReadableScrollViewWrapper()
+    }
+}
+
+private struct ReadableScrollViewWrapper: View {
+    @State private var offset: CGFloat = 0
+    @State private var contentSize: CGSize = .zero
+    @State private var isRefreshing: Bool = false
+    
+    var body: some View {
+        VStack {
+            Text("Offset: \(Int(offset))")
+                .foregroundColor(.white)
+            
+            ReadableScrollView(offset: $offset, contentSize: $contentSize) {
+                VStack(spacing: 20) {
+                    ForEach(0..<20) { i in
+                        Text("Item \(i)")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                }
+                .padding()
+            }
+            
+            Divider()
+            
+            RefreshableScrollView(offset: $offset, isRefreshing: $isRefreshing) {
+                VStack(spacing: 20) {
+                    ForEach(0..<20) { i in
+                        Text("Refreshable Item \(i)")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue.opacity(0.2))
+                            .cornerRadius(8)
+                    }
+                }
+                .padding()
+            }
+        }
+    }
+}

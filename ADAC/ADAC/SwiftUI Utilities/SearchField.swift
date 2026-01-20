@@ -72,3 +72,26 @@ extension SearchField {
         return view
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.edgesIgnoringSafeArea(.all)
+        SearchFieldWrapper()
+    }
+}
+
+private struct SearchFieldWrapper: View {
+    @State private var text = ""
+    
+    var body: some View {
+        VStack {
+            SearchField(text: $text)
+                .placeholder("Search...")
+                .frame(height: 50)
+                .padding()
+            
+            Text("Searching for: \(text)")
+                .foregroundColor(.white)
+        }
+    }
+}
