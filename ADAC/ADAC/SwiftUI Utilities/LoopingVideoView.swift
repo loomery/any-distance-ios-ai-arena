@@ -131,3 +131,35 @@ final class LoopingVideoUIView: UIView {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        Text("Looping Video View")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Placeholder for video view (actual video requires URL)
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.gray.opacity(0.3))
+            .frame(height: 300)
+            .overlay(
+                VStack(spacing: 10) {
+                    Image(systemName: "video")
+                        .font(.system(size: 40))
+                        .foregroundColor(.white)
+                    Text("Video Placeholder")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            )
+
+        Text("LoopingVideoView plays video files in a seamless loop")
+            .font(.caption)
+            .foregroundColor(.gray)
+            .padding()
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

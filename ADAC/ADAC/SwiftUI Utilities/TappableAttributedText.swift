@@ -180,3 +180,48 @@ struct TappableAttributedText: UIViewRepresentable {
         }
     }
 }
+
+#Preview("TappableAttributedText") {
+    StatefulPreviewWrapper3(nil as CGFloat?, nil as CGFloat?, "", title: "Tappable Attributed Text") { $layoutWidth, $layoutHeight, $tappedWord in
+        VStack(spacing: 20) {
+            TappableAttributedText(
+                attributedText: AttributedString("Tap on any word to see the interaction. This text is tappable and responds to word selection."),
+                maxWidth: 300,
+                onWordTapped: { range in
+                    tappedWord = String(describing: range)
+                },
+                layoutWidth: $layoutWidth,
+                layoutHeight: $layoutHeight
+            )
+            .padding()
+            .background(Color.previewCardBackground)
+            .cornerRadius(8)
+
+            if let width = layoutWidth, let height = layoutHeight {
+                Text.previewCaption("Layout: \(Int(width)) × \(Int(height))")
+            }
+
+            if !tappedWord.isEmpty {
+                Text.previewCaption("Tapped: \(tappedWord)")
+            }
+        }
+    }
+}
+
+#Preview("UsernameTappableAttributedText") {
+    StatefulPreviewWrapper2(nil as CGFloat?, nil as CGFloat?, title: "Username Tappable Text") { $layoutWidth, $layoutHeight in
+        VStack(spacing: 20) {
+            UsernameTappableAttributedText(
+                attributedText: AttributedString("Check out @john and @sarah's profiles by tapping their names!"),
+                maxWidth: 300,
+                layoutWidth: $layoutWidth,
+                layoutHeight: $layoutHeight
+            )
+            .padding()
+            .background(Color.previewCardBackground)
+            .cornerRadius(8)
+
+            Text.previewCaption("Tap usernames to open their profiles")
+        }
+    }
+}

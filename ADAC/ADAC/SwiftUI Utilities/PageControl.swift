@@ -44,3 +44,16 @@ struct PageControl: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    StatefulPreviewWrapper(initialValue: 2, title: "Page Control") { $currentPage in
+        VStack(spacing: 20) {
+            Text("Page: \(currentPage + 1)")
+                .font(.title)
+                .previewInfo()
+
+            PageControl(currentPage: $currentPage, numberOfPages: 5)
+                .frame(height: 40)
+        }
+    }
+}

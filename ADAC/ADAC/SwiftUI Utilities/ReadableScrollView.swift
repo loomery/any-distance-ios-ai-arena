@@ -138,3 +138,55 @@ struct RefreshableScrollView<Content: View>: View {
         }
     }
 }
+
+#Preview("ReadableScrollView") {
+    StatefulPreviewWrapper2(CGFloat(0), CGSize.zero, title: "Readable Scroll View") { $offset, $contentSize in
+        VStack(spacing: 0) {
+            HStack {
+                Text.previewCaption("Position: \(Int(offset))")
+                Spacer()
+            }
+            .padding()
+            .background(Color(white: 0.1))
+
+            ReadableScrollView(offset: $offset, contentSize: $contentSize) {
+                VStack(spacing: 20) {
+                    ForEach(0..<20, id: \.self) { index in
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.adOrange.opacity(Double(index) / 20))
+                            .frame(height: 80)
+                            .overlay(
+                                Text("Item \(index + 1)")
+                                    .foregroundColor(.white)
+                            )
+                    }
+                }
+                .padding()
+            }
+        }
+    }
+}
+
+#Preview("RefreshableScrollView") {
+    StatefulPreviewWrapper2(CGFloat(0), false, title: "Refreshable Scroll View") { $offset, $isRefreshing in
+        RefreshableScrollView(offset: $offset, isRefreshing: $isRefreshing) {
+            VStack(spacing: 20) {
+                ForEach(0..<15, id: \.self) { index in
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.adYellow.opacity(Double(index) / 15))
+                        .frame(height: 80)
+                        .overlay(
+                            Text("Item \(index + 1)")
+                                .foregroundColor(.black)
+                        )
+                }
+            }
+            .padding()
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                isRefreshing = false
+            }
+        }
+    }
+}

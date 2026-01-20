@@ -33,3 +33,24 @@ struct SwiftUILoadingButton: UIViewRepresentable {
         uiView.isLoading = isLoading
     }
 }
+
+#Preview {
+    StatefulPreviewWrapper(initialValue: false, title: "Loading Button") { $isLoading in
+        VStack(spacing: 20) {
+            SwiftUILoadingButton(
+                isLoading: isLoading,
+                title: isLoading ? "Loading..." : "Submit",
+                backgroundColor: .adOrange,
+                action: {
+                    isLoading = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        isLoading = false
+                    }
+                }
+            )
+            .frame(height: 50)
+
+            Text.previewCaption(isLoading ? "Processing..." : "Tap to trigger loading")
+        }
+    }
+}

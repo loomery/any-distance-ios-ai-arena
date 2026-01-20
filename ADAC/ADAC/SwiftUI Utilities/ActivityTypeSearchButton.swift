@@ -27,7 +27,7 @@ struct ActivityTypeSearchButton: View {
                     .foregroundColor(.white)
                     .lineBreakMode(.byWordWrapping)
                 Spacer()
-                Image(systemName: .magnifyingglass)
+                Image(systemName: "magnifyingglass")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20.0, height: 20.0)
@@ -49,6 +49,17 @@ struct ActivityTypeSearchButton: View {
                 self.activityType = activityType
                 showingActivityList = false
             }
+        }
+    }
+}
+
+#Preview {
+    StatefulPreviewWrapper(initialValue: ActivityType.run, title: "Activity Type Search") { $selectedActivity in
+        VStack(spacing: 20) {
+            ActivityTypeSearchButton(activityType: $selectedActivity)
+                .padding()
+
+            Text.previewCaption("Selected: \(selectedActivity.displayName)")
         }
     }
 }

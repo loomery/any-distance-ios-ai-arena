@@ -47,3 +47,44 @@ struct NativeCamera: UIViewControllerRepresentable {
         }
     }
 }
+
+#Preview {
+    @State var selectedImage: UIImage?
+
+    return VStack(spacing: 20) {
+        Text("Native Camera")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        if let image = selectedImage {
+            Image(uiImage: image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(height: 300)
+                .cornerRadius(12)
+        } else {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.gray.opacity(0.3))
+                .frame(height: 300)
+                .overlay(
+                    VStack(spacing: 10) {
+                        Image(systemName: "camera")
+                            .font(.system(size: 40))
+                            .foregroundColor(.white)
+                        Text("Camera Placeholder")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                )
+        }
+
+        Text("NativeCamera opens the device camera or photo library")
+            .font(.caption)
+            .foregroundColor(.gray)
+            .padding()
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

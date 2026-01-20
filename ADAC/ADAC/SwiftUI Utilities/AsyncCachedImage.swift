@@ -320,3 +320,24 @@ struct AsyncCachedImage: View {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 20) {
+        Text("Async Cached Image")
+            .font(.title2)
+            .foregroundColor(.white)
+
+        // Loading state placeholder
+        AsyncCachedImage(
+            url: nil,
+            showsLoadingIndicator: true
+        )
+        .frame(height: 200)
+        .background(Color(white: 0.15))
+        .cornerRadius(12)
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

@@ -95,3 +95,29 @@ struct CurvedTextAnimationView: View {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 40) {
+        ZStack {
+            Circle()
+                .stroke(Color.white.opacity(0.2), lineWidth: 2)
+
+            CurvedTextAnimationView(text: "SWIFTUI ROCKS", radius: 80)
+                .frame(width: 200, height: 200)
+        }
+        .frame(height: 250)
+
+        ZStack {
+            Circle()
+                .stroke(Color.white.opacity(0.2), lineWidth: 2)
+
+            CurvedTextAnimationView(text: "PREVIEW", radius: 60)
+                .frame(width: 160, height: 160)
+        }
+        .frame(height: 200)
+
+        Spacer()
+    }
+    .padding()
+    .background(Color.black)
+}

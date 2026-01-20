@@ -306,3 +306,19 @@ extension UITextView: UITextViewDelegate {
         placeholderLabel?.isHidden = !text.isEmpty
     }
 }
+
+#Preview {
+    StatefulPreviewWrapper(initialValue: "", title: "Taggable Text Field") { $text in
+        TaggableTextField(
+            placeholder: "Write a message... (use @ to mention someone)",
+            text: $text,
+            axis: .vertical,
+            returnKeyType: .default,
+            font: .systemFont(ofSize: 16, weight: .regular)
+        )
+        .frame(minHeight: 100)
+        .padding()
+        .background(Color.previewCardBackground)
+        .cornerRadius(8)
+    }
+}

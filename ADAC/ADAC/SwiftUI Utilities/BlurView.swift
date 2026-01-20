@@ -192,3 +192,73 @@ open class VariableBlurUIView: UIVisualEffectView {
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {}
 }
+
+#Preview("BlurView - Dark") {
+    ZStack {
+        LinearGradient(
+            gradient: Gradient(colors: [Color.red, Color.blue]),
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        .ignoresSafeArea()
+
+        VStack(spacing: 20) {
+            Text("Dark Blur")
+                .font(.title2)
+                .foregroundColor(.white)
+
+            DarkBlurView()
+                .frame(height: 100)
+                .cornerRadius(12)
+        }
+        .padding()
+    }
+}
+
+#Preview("BlurView - Light") {
+    ZStack {
+        LinearGradient(
+            gradient: Gradient(colors: [Color.yellow, Color.orange]),
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        .ignoresSafeArea()
+
+        VStack(spacing: 20) {
+            Text("Light Blur")
+                .font(.title2)
+                .foregroundColor(.black)
+
+            LightBlurView()
+                .frame(height: 100)
+                .cornerRadius(12)
+        }
+        .padding()
+    }
+}
+
+#Preview("BlurView - Custom Intensity") {
+    ZStack {
+        LinearGradient(
+            gradient: Gradient(colors: [Color.cyan, Color.green]),
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        .ignoresSafeArea()
+
+        VStack(spacing: 30) {
+            ForEach([0.2, 0.5, 0.8], id: \.self) { intensity in
+                VStack {
+                    Text("Intensity: \(String(format: "%.1f", intensity))")
+                        .font(.caption)
+                        .foregroundColor(.white)
+
+                    BlurView(style: .systemMaterial, intensity: intensity)
+                        .frame(height: 60)
+                        .cornerRadius(8)
+                }
+            }
+        }
+        .padding()
+    }
+}

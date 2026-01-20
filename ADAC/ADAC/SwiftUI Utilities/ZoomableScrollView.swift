@@ -57,3 +57,40 @@ struct ZoomableScrollView<Content: View>: UIViewRepresentable {
         }
     }
 }
+
+#Preview {
+    ZoomableScrollView {
+        VStack(spacing: 20) {
+            Text("Zoomable Content")
+                .font(.title2)
+                .foregroundColor(.white)
+
+            RoundedRectangle(cornerRadius: 12)
+                .fill(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.adOrange, Color.adYellow]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(height: 400)
+                .overlay(
+                    VStack {
+                        Text("Pinch to Zoom")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                        Text("(Max 20x)")
+                            .font(.caption)
+                            .foregroundColor(.white)
+                    }
+                )
+
+            Text("Tap and pinch to zoom in and out")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding()
+        }
+        .padding()
+    }
+    .background(Color.black)
+}

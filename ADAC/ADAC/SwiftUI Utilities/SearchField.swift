@@ -72,3 +72,17 @@ extension SearchField {
         return view
     }
 }
+
+#Preview {
+    StatefulPreviewWrapper(initialValue: "", title: "Search Field") { $searchText in
+        VStack(spacing: 20) {
+            SearchField(text: $searchText)
+                .placeholder("Search...")
+                .frame(height: 50)
+
+            if !searchText.isEmpty {
+                Text.previewCaption("Searching for: \(searchText)")
+            }
+        }
+    }
+}
